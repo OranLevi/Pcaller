@@ -14,18 +14,15 @@ class DialerViewController: UIViewController {
     @IBOutlet weak var numberDisplayLabel: UILabel!
     
     var numberDisplay = ""
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-
     }
 
     func addNumberToDisplay(addNumber: String){
         numberDisplay += addNumber
 //        addSpaceToNumber()
         numberDisplayLabel.text = numberDisplay
- 
     }
     
 //    func addSpaceToNumber(){
@@ -91,6 +88,16 @@ class DialerViewController: UIViewController {
         print(numberDisplay)
     }
     
+    @IBAction func asteriskTapButton(_ sender: Any) {
+        addNumberToDisplay(addNumber: "*")
+        print(numberDisplay)
+    }
+    
+    @IBAction func ladderTapButton(_ sender: Any) {
+        addNumberToDisplay(addNumber: "#")
+        print(numberDisplay)
+    }
+    
     @IBAction func deleteTapButton(_ sender: Any) {
         
         if numberDisplay != "" {
@@ -110,9 +117,6 @@ class DialerViewController: UIViewController {
     @IBAction func dialerTabButton(_ sender: Any) {
         
     }
-    
-    
-    
     
 }
 
