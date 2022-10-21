@@ -11,6 +11,16 @@ import Contacts
 class ContactsViewController: UIViewController {
     
     @IBOutlet weak var contactsTableView: UITableView!
+    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var segmentFilter: UISegmentedControl!
+    
+    var accessContacts = false
+    var isSearching = false
+    var isSegmentedControl = false
+    
+    var contacts = [FetchedContact]()
+    var filteredData = [FetchedContact]()
+    var service = Service.shared
     
     struct FetchedContact {
         var firstName: String
@@ -18,87 +28,91 @@ class ContactsViewController: UIViewController {
         var telephone: String
     }
     
-    var contacts = [FetchedContact]()
+    var realArray: [FetchedContact] {
+        if isSearching {
+            return filteredData
+        } else if isSegmentedControl {
+            return filteredData
+        } else {
+            return contacts
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         contactsTableView.dataSource = self
         contactsTableView.delegate = self
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
+        searchBar.delegate = self
+        segmentFilter.selectedSegmentIndex = service.selectedIndexSegment.rawValue
         fetchContacts()
     }
     
-    
-    private func fetchContacts() {
-        // 1.
-        let store = CNContactStore()
-        store.requestAccess(for: .contacts) { (granted, error) in
-            if let error = error {
-                print("failed to request access", error)
-                self.messageAccess()
-                return
-            }
-            if granted {
-                // 2.
-                let keys = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactPhoneNumbersKey]
-                let request = CNContactFetchRequest(keysToFetch: keys as [CNKeyDescriptor])
-                do {
-                    // 3.
-                   
-                    try store.enumerateContacts(with: request, usingBlock: { (contact, stopPointer) in
-                        self.contacts.append(FetchedContact(firstName: contact.givenName, lastName: contact.familyName, telephone: contact.phoneNumbers.first?.value.stringValue ?? ""))
-                    })
-                    DispatchQueue.main.async {
-                        self.contactsTableView.reloadData()
-                    }
-                } catch let error {
-                    print("Failed to enumerate contact", error)
-                }
-            } else {
-                print("access denied")
-            }
+    override func viewWillAppear(_ animated: Bool) {
+        if !(accessContacts){
+            fetchContacts()
         }
     }
     
-    func messageAccess(){
-        DispatchQueue.main.async {
-            let alertController = UIAlertController (title: "Title", message: "Go to Settings?", preferredStyle: .alert)
-            
-            let settingsAction = UIAlertAction(title: "Settings", style: .default) { (_) -> Void in
-                
-                guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
-                    return
-                }
-                
-                if UIApplication.shared.canOpenURL(settingsUrl) {
-                    UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
-                        print("Settings opened: \(success)") // Prints true
-                    })
+    @IBAction func segmentedControl(_ sender: UISegmentedControl) {
+        isSegmentedControl = true
+        switch segmentFilter.selectedSegmentIndex {
+        case 0:
+            filteredData = contacts.sorted { $0.firstName.lowercased() < $1.firstName.lowercased() }
+        case 1:
+            filteredData = contacts.sorted { $0.lastName.lowercased() < $1.lastName.lowercased() }
+        case 2:
+            filteredData = contacts.sorted { $0.telephone.lowercased() < $1.telephone.lowercased() }
+        default:
+            print("##")
+        }
+        contactsTableView.reloadData()
+    }
+    
+    private func fetchContacts() {
+        
+        let store = CNContactStore()
+        store.requestAccess(for: .contacts) { (granted, error) in
+            if let error = error {
+                print("## Failed to request access", error)
+                self.service.messageAccess(vc: self)
+                return
+            }
+            DispatchQueue.global(qos: .default).async {
+                if granted {
+                    
+                    self.accessContacts = true
+                    let keys = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactPhoneNumbersKey]
+                    let request = CNContactFetchRequest(keysToFetch: keys as [CNKeyDescriptor])
+                    do {
+                        try store.enumerateContacts(with: request, usingBlock: { (contact, stopPointer) in
+                            
+                            self.contacts.append(FetchedContact(firstName: contact.givenName, lastName: contact.familyName, telephone: contact.phoneNumbers.first?.value.stringValue ?? ""))
+                        })
+                        DispatchQueue.main.async {
+                            self.contacts = self.contacts.sorted { $0.firstName.lowercased() < $1.firstName.lowercased() }
+                            self.contactsTableView.reloadData()
+                        }
+                    } catch let error {
+                        print("## Failed to enumerate contact", error)
+                    }
+                } else {
+                    print("## Access denied")
                 }
             }
-            alertController.addAction(settingsAction)
-            let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
-            alertController.addAction(cancelAction)
-            
-            self.present(alertController, animated: true, completion: nil)
         }
     }
 }
 
 extension ContactsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(contacts.count)
-        return contacts.count
+        return realArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-
         let cell = tableView.dequeueReusableCell(withIdentifier: "Contacts", for: indexPath) as! ContactsTableViewCell
         
-        let item = contacts[indexPath.row]
+        let item = realArray[indexPath.row]
         cell.firstNameLabel.text = item.firstName
         cell.lastNameLabel.text = item.lastName
         cell.telephoneLabel.text = item.telephone
@@ -107,17 +121,48 @@ extension ContactsViewController: UITableViewDataSource {
     }
 }
 
-extension ContactsViewController: UITableViewDelegate{
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let callAction = UIContextualAction(style: .destructive, title: "Call Private", handler: { (action, view, success) in
-          
-            
-            
-            
-      })
-        callAction.backgroundColor = .systemGreen
-//        callAction.image = UIImage(systemName: "phone.circle")
+extension ContactsViewController: UITableViewDelegate {
     
-      return UISwipeActionsConfiguration(actions: [callAction])
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let item = realArray[indexPath.row]
+        let callAction = UIContextualAction(style: .destructive, title: "Call Private", handler: { (action, view, success) in
+            self.service.dialNumber(number: item.telephone)
+        })
+        callAction.backgroundColor = .systemGreen
+        return UISwipeActionsConfiguration(actions: [callAction])
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let item = realArray[indexPath.row]
+        service.showCallAction(vc: self, telephone: item.telephone)
     }
 }
+
+extension ContactsViewController: UISearchBarDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text == "" {
+            isSearching = false
+            contactsTableView.reloadData()
+        } else {
+            isSearching = true
+            filteredData = contacts.filter {name in
+                return   name.firstName.contains(searchText.lowercased()) || name.lastName.contains(searchText.lowercased()) ||  name.telephone.contains(searchText.lowercased())
+            }
+            contactsTableView.reloadData()
+        }
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = true
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.text = nil
+        searchBar.showsCancelButton = false
+        searchBar.endEditing(true)
+        isSearching = false
+        contactsTableView.reloadData()
+    }
+}
+

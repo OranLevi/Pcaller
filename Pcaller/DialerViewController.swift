@@ -8,94 +8,99 @@
 import UIKit
 
 class DialerViewController: UIViewController {
-
+    
     @IBOutlet weak var hideMyNumberSwitch: UISwitch!
     @IBOutlet weak var saveToLastSwitch: UISwitch!
     @IBOutlet weak var numberDisplayLabel: UILabel!
     
+    @IBOutlet weak var oneButton: UIButton!
+    @IBOutlet weak var twoButton: UIButton!
+    @IBOutlet weak var threeButton: UIButton!
+    @IBOutlet weak var fourButton: UIButton!
+    @IBOutlet weak var fiveButton: UIButton!
+    @IBOutlet weak var sixButton: UIButton!
+    @IBOutlet weak var sevenButton: UIButton!
+    @IBOutlet weak var eightButton: UIButton!
+    @IBOutlet weak var nineButton: UIButton!
+    @IBOutlet weak var zeroButton: UIButton!
+    @IBOutlet weak var asteriskButton: UIButton!
+    @IBOutlet weak var laderButton: UIButton!
+    
     var numberDisplay = ""
-
+    var service = Service.shared
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupCornerRadiusButton()
     }
-
+    
+    func setupCornerRadiusButton(){
+        let cornerRadiusButton = 9
+        oneButton.layer.cornerRadius = CGFloat(cornerRadiusButton)
+        twoButton.layer.cornerRadius = CGFloat(cornerRadiusButton)
+        threeButton.layer.cornerRadius = CGFloat(cornerRadiusButton)
+        fourButton.layer.cornerRadius = CGFloat(cornerRadiusButton)
+        fiveButton.layer.cornerRadius = CGFloat(cornerRadiusButton)
+        sixButton.layer.cornerRadius = CGFloat(cornerRadiusButton)
+        sevenButton.layer.cornerRadius = CGFloat(cornerRadiusButton)
+        eightButton.layer.cornerRadius = CGFloat(cornerRadiusButton)
+        nineButton.layer.cornerRadius = CGFloat(cornerRadiusButton)
+        zeroButton.layer.cornerRadius = CGFloat(cornerRadiusButton)
+        asteriskButton.layer.cornerRadius = CGFloat(cornerRadiusButton)
+        laderButton.layer.cornerRadius = CGFloat(cornerRadiusButton)
+    }
+    
     func addNumberToDisplay(addNumber: String){
         numberDisplay += addNumber
-//        addSpaceToNumber()
         numberDisplayLabel.text = numberDisplay
     }
     
-//    func addSpaceToNumber(){
-//        if numberDisplay.count == 3 {
-//            numberDisplay.insert("-", at: numberDisplay.index(numberDisplay.startIndex, offsetBy: 3))
-//
-//        }
-//
-//        if numberDisplay.count == 7 {
-//            numberDisplay.insert("-", at: numberDisplay.index(numberDisplay.startIndex, offsetBy: 7))
-//
-//        }
-//
-//    }
-    
     @IBAction func oneTapButton(_ sender: Any) {
         addNumberToDisplay(addNumber: "1")
-        print(numberDisplay)
     }
     
     @IBAction func twoTapButton(_ sender: Any) {
         addNumberToDisplay(addNumber: "2")
-        print(numberDisplay)
     }
     
     @IBAction func threeTapButton(_ sender: Any) {
         addNumberToDisplay(addNumber: "3")
-        print(numberDisplay)
     }
     
     @IBAction func fourTapButton(_ sender: Any) {
         addNumberToDisplay(addNumber: "4")
-        print(numberDisplay)
     }
     
     @IBAction func fiveTapButton(_ sender: Any) {
         addNumberToDisplay(addNumber: "5")
-        print(numberDisplay)
     }
     
     @IBAction func sixTabButton(_ sender: Any) {
         addNumberToDisplay(addNumber: "6")
-        print(numberDisplay)
     }
     
     @IBAction func sevenTapButton(_ sender: Any) {
         addNumberToDisplay(addNumber: "7")
-        print(numberDisplay)
     }
     
     @IBAction func eightTapButton(_ sender: Any) {
         addNumberToDisplay(addNumber: "8")
-        print(numberDisplay)
     }
     
     @IBAction func nineTapButton(_ sender: Any) {
         addNumberToDisplay(addNumber: "9")
-        print(numberDisplay)
     }
     
     @IBAction func zeroTapButton(_ sender: Any) {
         addNumberToDisplay(addNumber: "0")
-        print(numberDisplay)
     }
     
     @IBAction func asteriskTapButton(_ sender: Any) {
         addNumberToDisplay(addNumber: "*")
-        print(numberDisplay)
     }
     
     @IBAction func ladderTapButton(_ sender: Any) {
         addNumberToDisplay(addNumber: "#")
-        print(numberDisplay)
     }
     
     @IBAction func deleteTapButton(_ sender: Any) {
@@ -115,8 +120,9 @@ class DialerViewController: UIViewController {
     }
     
     @IBAction func dialerTabButton(_ sender: Any) {
-        
+        service.dialNumber(number: numberDisplay)
     }
-    
 }
+
+
 
