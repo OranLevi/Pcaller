@@ -43,11 +43,12 @@ class ContactsViewController: UIViewController {
         contactsTableView.dataSource = self
         contactsTableView.delegate = self
         searchBar.delegate = self
-        segmentFilter.selectedSegmentIndex = service.selectedIndexSegment.rawValue
+        segmentFilter.selectedSegmentIndex = UserDefaults.standard.integer(forKey: "sortContacts")
         fetchContacts()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        segmentFilter.selectedSegmentIndex = UserDefaults.standard.integer(forKey: "sortContacts")
         if !(accessContacts){
             fetchContacts()
         }
@@ -126,7 +127,7 @@ extension ContactsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let item = realArray[indexPath.row]
         let callAction = UIContextualAction(style: .destructive, title: "Call Private", handler: { (action, view, success) in
-            self.service.dialNumber(number: item.telephone)
+            self.service.dialNumber(number: item.telephone, prefixNumber: true)
         })
         callAction.backgroundColor = .systemGreen
         return UISwipeActionsConfiguration(actions: [callAction])

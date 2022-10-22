@@ -32,6 +32,12 @@ class DialerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCornerRadiusButton()
+        hideMyNumberSwitch.isOn =  UserDefaults.standard.bool(forKey: "AutoSwitchHideMyNumber")
+        print(UserDefaults.standard.bool(forKey: "AutoSwitchHideMyNumber"))
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        hideMyNumberSwitch.isOn =  UserDefaults.standard.bool(forKey: "AutoSwitchHideMyNumber")
     }
     
     func setupCornerRadiusButton(){
@@ -120,7 +126,13 @@ class DialerViewController: UIViewController {
     }
     
     @IBAction func dialerTabButton(_ sender: Any) {
-        service.dialNumber(number: numberDisplay)
+        if hideMyNumberSwitch.isOn {
+            service.dialNumber(number: numberDisplay, prefixNumber: true)
+        }
+        else {
+            service.dialNumber(number: numberDisplay, prefixNumber: false)
+        }
+        
     }
 }
 
