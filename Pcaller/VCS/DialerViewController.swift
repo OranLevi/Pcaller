@@ -10,7 +10,7 @@ import UIKit
 class DialerViewController: UIViewController {
     
     @IBOutlet weak var hideMyNumberSwitch: UISwitch!
-    @IBOutlet weak var saveToLastSwitch: UISwitch!
+    @IBOutlet weak var saveToHistorySwitch: UISwitch!
     @IBOutlet weak var numberDisplayLabel: UILabel!
     
     @IBOutlet weak var oneButton: UIButton!
@@ -28,16 +28,31 @@ class DialerViewController: UIViewController {
     
     var numberDisplay = ""
     var service = Service.shared
-    
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCornerRadiusButton()
-        hideMyNumberSwitch.isOn =  UserDefaults.standard.bool(forKey: "AutoSwitchHideMyNumber")
-        print(UserDefaults.standard.bool(forKey: "AutoSwitchHideMyNumber"))
+     
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        hideMyNumberSwitch.isOn =  UserDefaults.standard.bool(forKey: "AutoSwitchHideMyNumber")
+        setupSwitches()
+    }
+    
+    func setupSwitches(){
+        
+        if UserDefaults.standard.string(forKey: NameAutoSwitchUserDefaults.hideMyNumber.rawValue) == "isOn" || UserDefaults.standard.string(forKey: NameAutoSwitchUserDefaults.hideMyNumber.rawValue) == nil {
+            hideMyNumberSwitch.isOn = true
+        } else {
+            hideMyNumberSwitch.isOn = false
+        }
+        
+        if UserDefaults.standard.string(forKey: NameAutoSwitchUserDefaults.saveToHistory.rawValue) == "isOn" || UserDefaults.standard.string(forKey: NameAutoSwitchUserDefaults.saveToHistory.rawValue) == nil {
+            saveToHistorySwitch.isOn = true
+        } else {
+            saveToHistorySwitch.isOn = false
+            service.saveToHistory = false
+        }
     }
     
     func setupCornerRadiusButton(){
@@ -128,11 +143,12 @@ class DialerViewController: UIViewController {
     @IBAction func dialerTabButton(_ sender: Any) {
         if hideMyNumberSwitch.isOn {
             service.dialNumber(number: numberDisplay, prefixNumber: true)
+            CallHistoryViewController().saveHistoryData(firstName: "", lastName: "", telephone: numberDisplayLabel.text ?? "??")
         }
         else {
             service.dialNumber(number: numberDisplay, prefixNumber: false)
+            CallHistoryViewController().saveHistoryData(firstName: "", lastName: "", telephone: numberDisplayLabel.text ?? "??")
         }
-        
     }
 }
 

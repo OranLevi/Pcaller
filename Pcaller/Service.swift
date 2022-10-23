@@ -13,6 +13,12 @@ enum SegmentIndex: Int {
     case telephone = 2
 }
 
+enum NameAutoSwitchUserDefaults:String{
+    case hideMyNumber = "AutoSwitchHideMyNumber"
+    case saveToHistory = "AutoSwitchSaveToHistory"
+}
+
+
 class Service {
     
     static let shared: Service = Service()
@@ -20,7 +26,8 @@ class Service {
     //* with %2A and # with %23
     var prefix = UserDefaults.standard.string(forKey: "Prefix") ?? "%2331%23"
     var selectedIndexSegment = SegmentIndex.firstName
-    
+    var saveToHistory = true
+
     func messageAccess(vc: UIViewController){
         DispatchQueue.main.async {
             
@@ -53,17 +60,18 @@ class Service {
         }
     }
     
-    func showCallAction(vc: UIViewController, telephone: String) {
+    func showCallAction(vc: UIViewController, telephone: String, firstName: String, lastName: String) {
         
         let alert = UIAlertController(title: "Select an action", message: "Please Select an Action", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Call regular", style: .default, handler: { (_) in
             self.dialNumber(number: telephone, prefixNumber: false)
+            CallHistoryViewController().saveHistoryData(firstName: firstName, lastName: lastName, telephone: telephone)
         }))
         
         alert.addAction(UIAlertAction(title: "Call with Private number", style: .destructive, handler: { (_) in
             print(self.dialNumber(number: telephone, prefixNumber: true))
             self.dialNumber(number: telephone, prefixNumber: true)
-            
+            CallHistoryViewController().saveHistoryData(firstName: firstName, lastName: lastName, telephone: telephone)
         }))
         
         alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: { (_) in

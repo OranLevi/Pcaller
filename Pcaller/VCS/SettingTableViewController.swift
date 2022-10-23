@@ -15,6 +15,7 @@ class SettingTableViewController: UITableViewController {
     var tapSavePrefix = false
     
     @IBOutlet weak var autoHideMyNumberSwitch: UISwitch!
+    @IBOutlet weak var autoSaveToHistorySwitch: UISwitch!
     @IBOutlet weak var prefixText: UITextField!
     @IBOutlet weak var firstNameSwitch: UISwitch!
     @IBOutlet weak var lastNameSwitch: UISwitch!
@@ -27,22 +28,7 @@ class SettingTableViewController: UITableViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
-        
-        if UserDefaults.standard.integer(forKey: "sortContacts") == 0 {
-            segmentSwitch(switchOn: firstNameSwitch)
-        } else if UserDefaults.standard.integer(forKey: "sortContacts") == 1 {
-            segmentSwitch(switchOn: lastNameSwitch)
-        } else if UserDefaults.standard.integer(forKey: "sortContacts") == 2 {
-            segmentSwitch(switchOn: telephoneNameSwitch)
-        }
-        
-        if UserDefaults.standard.bool(forKey: "AutoSwitchHideMyNumber") {
-            autoHideMyNumberSwitch.isOn = true
-        } else {
-            autoHideMyNumberSwitch.isOn = false
-        }
-
+        setupSwitches()
     }
     
     @IBAction func firstNameSwitchAction(_ sender: Any) {
@@ -67,6 +53,30 @@ class SettingTableViewController: UITableViewController {
         switchOn.isOn = true
     }
     
+    func setupSwitches(){
+        if UserDefaults.standard.integer(forKey: "sortContacts") == 0 {
+            segmentSwitch(switchOn: firstNameSwitch)
+        } else if UserDefaults.standard.integer(forKey: "sortContacts") == 1 {
+            segmentSwitch(switchOn: lastNameSwitch)
+        } else if UserDefaults.standard.integer(forKey: "sortContacts") == 2 {
+            segmentSwitch(switchOn: telephoneNameSwitch)
+        }
+        
+        if UserDefaults.standard.string(forKey: NameAutoSwitchUserDefaults.hideMyNumber.rawValue) == "isOn" || UserDefaults.standard.string(forKey: NameAutoSwitchUserDefaults.hideMyNumber.rawValue) == nil  {
+            autoHideMyNumberSwitch.isOn = true
+        } else {
+            autoHideMyNumberSwitch.isOn = false
+        }
+
+        if UserDefaults.standard.string(forKey: NameAutoSwitchUserDefaults.saveToHistory.rawValue) == "isOn" || UserDefaults.standard.string(forKey: NameAutoSwitchUserDefaults.saveToHistory.rawValue) == nil  {
+            autoSaveToHistorySwitch.isOn = true
+        } else {
+            autoSaveToHistorySwitch.isOn = false
+        }
+        
+        
+    }
+    
     @IBAction func editButton(_ sender: Any) {
         tapEditingPrefix = true
         if tapSavePrefix == true {
@@ -86,16 +96,24 @@ class SettingTableViewController: UITableViewController {
             tapSavePrefix = true
         }
     }
-    
+ 
     @IBAction func SwitchAutoHideMyNumber(_ sender: Any) {
         if autoHideMyNumberSwitch.isOn {
-            UserDefaults.standard.set(true, forKey: "AutoSwitchHideMyNumber")
+            UserDefaults.standard.set("isOn", forKey: NameAutoSwitchUserDefaults.hideMyNumber.rawValue)
         } else {
-            UserDefaults.standard.set(false, forKey: "AutoSwitchHideMyNumber")
+            UserDefaults.standard.set("isOff", forKey: NameAutoSwitchUserDefaults.hideMyNumber.rawValue)
         }
     }
     
-    @IBAction func clearAllButton(_ sender: Any) {
+    @IBAction func SwitchAutoSaveToHistory(_ sender: Any) {
+        if autoSaveToHistorySwitch.isOn {
+            UserDefaults.standard.set("isOn", forKey: NameAutoSwitchUserDefaults.saveToHistory.rawValue)
+        } else {
+            UserDefaults.standard.set("isOff", forKey: NameAutoSwitchUserDefaults.saveToHistory.rawValue)
+        }
+    }
+    
+    @IBAction func resetSettingButton(_ sender: Any) {
         if let appDomain = Bundle.main.bundleIdentifier {
        UserDefaults.standard.removePersistentDomain(forName: appDomain)
         }
@@ -106,6 +124,7 @@ class SettingTableViewController: UITableViewController {
         setupButton()
         prefixText.text = service.textReplaced(text: service.prefix, fromHashtag: false)
     }
+    
     func setupButton(){
         
         if service.selectedIndexSegment == SegmentIndex.firstName{

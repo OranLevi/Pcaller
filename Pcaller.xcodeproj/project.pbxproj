@@ -15,6 +15,10 @@
 		172CEA5128FC1FAA006D297B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 172CEA4F28FC1FAA006D297B /* LaunchScreen.storyboard */; };
 		173D9BC228FDC13800D8BE25 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173D9BC128FDC13800D8BE25 /* Service.swift */; };
 		177662A22902F51B001FDEF7 /* SettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177662A12902F51B001FDEF7 /* SettingTableViewController.swift */; };
+		17C541332903F71C0032F15B /* CallHistoryData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 17C541312903F71C0032F15B /* CallHistoryData.xcdatamodeld */; };
+		17C541352903F86D0032F15B /* CallHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C541342903F86D0032F15B /* CallHistoryViewController.swift */; };
+		17C541372903FC100032F15B /* CallHistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C541362903FC100032F15B /* CallHistoryTableViewCell.swift */; };
+		17C54139290408650032F15B /* CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C54138290408650032F15B /* CoreData.swift */; };
 		17C7BCBE28FC8F9900C22CAA /* ContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C7BCBD28FC8F9900C22CAA /* ContactsViewController.swift */; };
 		17C7BCC028FC906500C22CAA /* ContactsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C7BCBF28FC906500C22CAA /* ContactsTableViewCell.swift */; };
 /* End PBXBuildFile section */
@@ -30,6 +34,10 @@
 		172CEA5228FC1FAA006D297B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		173D9BC128FDC13800D8BE25 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		177662A12902F51B001FDEF7 /* SettingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewController.swift; sourceTree = "<group>"; };
+		17C541322903F71C0032F15B /* CallHistoryData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CallHistoryData.xcdatamodel; sourceTree = "<group>"; };
+		17C541342903F86D0032F15B /* CallHistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallHistoryViewController.swift; sourceTree = "<group>"; };
+		17C541362903FC100032F15B /* CallHistoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallHistoryTableViewCell.swift; sourceTree = "<group>"; };
+		17C54138290408650032F15B /* CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreData.swift; sourceTree = "<group>"; };
 		17C7BCBD28FC8F9900C22CAA /* ContactsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsViewController.swift; sourceTree = "<group>"; };
 		17C7BCBF28FC906500C22CAA /* ContactsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -45,6 +53,35 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1712768729044FF10089804B /* VCS */ = {
+			isa = PBXGroup;
+			children = (
+				172CEA4828FC1FAA006D297B /* DialerViewController.swift */,
+				17C7BCBD28FC8F9900C22CAA /* ContactsViewController.swift */,
+				17C541342903F86D0032F15B /* CallHistoryViewController.swift */,
+				177662A12902F51B001FDEF7 /* SettingTableViewController.swift */,
+			);
+			path = VCS;
+			sourceTree = "<group>";
+		};
+		1712768A290450420089804B /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				17C541312903F71C0032F15B /* CallHistoryData.xcdatamodeld */,
+				17C54138290408650032F15B /* CoreData.swift */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
+		1712768E2904507A0089804B /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				17C541362903FC100032F15B /* CallHistoryTableViewCell.swift */,
+				17C7BCBF28FC906500C22CAA /* ContactsTableViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		172CEA3828FC1FA9006D297B = {
 			isa = PBXGroup;
 			children = (
@@ -66,13 +103,12 @@
 			children = (
 				172CEA4428FC1FAA006D297B /* AppDelegate.swift */,
 				172CEA4628FC1FAA006D297B /* SceneDelegate.swift */,
-				172CEA4828FC1FAA006D297B /* DialerViewController.swift */,
-				172CEA4A28FC1FAA006D297B /* Main.storyboard */,
-				17C7BCBD28FC8F9900C22CAA /* ContactsViewController.swift */,
 				173D9BC128FDC13800D8BE25 /* Service.swift */,
-				17C7BCBF28FC906500C22CAA /* ContactsTableViewCell.swift */,
+				1712768E2904507A0089804B /* Cells */,
+				1712768729044FF10089804B /* VCS */,
+				1712768A290450420089804B /* CoreData */,
 				172CEA4D28FC1FAA006D297B /* Assets.xcassets */,
-				177662A12902F51B001FDEF7 /* SettingTableViewController.swift */,
+				172CEA4A28FC1FAA006D297B /* Main.storyboard */,
 				172CEA4F28FC1FAA006D297B /* LaunchScreen.storyboard */,
 				172CEA5228FC1FAA006D297B /* Info.plist */,
 			);
@@ -150,12 +186,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				17C541372903FC100032F15B /* CallHistoryTableViewCell.swift in Sources */,
 				172CEA4928FC1FAA006D297B /* DialerViewController.swift in Sources */,
+				17C541352903F86D0032F15B /* CallHistoryViewController.swift in Sources */,
 				17C7BCBE28FC8F9900C22CAA /* ContactsViewController.swift in Sources */,
 				17C7BCC028FC906500C22CAA /* ContactsTableViewCell.swift in Sources */,
 				172CEA4528FC1FAA006D297B /* AppDelegate.swift in Sources */,
+				17C541332903F71C0032F15B /* CallHistoryData.xcdatamodeld in Sources */,
 				172CEA4728FC1FAA006D297B /* SceneDelegate.swift in Sources */,
 				177662A22902F51B001FDEF7 /* SettingTableViewController.swift in Sources */,
+				17C54139290408650032F15B /* CoreData.swift in Sources */,
 				173D9BC228FDC13800D8BE25 /* Service.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -380,6 +420,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		17C541312903F71C0032F15B /* CallHistoryData.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				17C541322903F71C0032F15B /* CallHistoryData.xcdatamodel */,
+			);
+			currentVersion = 17C541322903F71C0032F15B /* CallHistoryData.xcdatamodel */;
+			path = CallHistoryData.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 172CEA3928FC1FA9006D297B /* Project object */;
 }

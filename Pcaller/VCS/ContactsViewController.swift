@@ -8,6 +8,12 @@
 import UIKit
 import Contacts
 
+struct FetchedContact {
+    var firstName: String
+    var lastName: String
+    var telephone: String
+}
+
 class ContactsViewController: UIViewController {
     
     @IBOutlet weak var contactsTableView: UITableView!
@@ -21,12 +27,6 @@ class ContactsViewController: UIViewController {
     var contacts = [FetchedContact]()
     var filteredData = [FetchedContact]()
     var service = Service.shared
-    
-    struct FetchedContact {
-        var firstName: String
-        var lastName: String
-        var telephone: String
-    }
     
     var realArray: [FetchedContact] {
         if isSearching {
@@ -44,7 +44,6 @@ class ContactsViewController: UIViewController {
         contactsTableView.delegate = self
         searchBar.delegate = self
         segmentFilter.selectedSegmentIndex = UserDefaults.standard.integer(forKey: "sortContacts")
-        fetchContacts()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -117,7 +116,7 @@ extension ContactsViewController: UITableViewDataSource {
         cell.firstNameLabel.text = item.firstName
         cell.lastNameLabel.text = item.lastName
         cell.telephoneLabel.text = item.telephone
-        
+
         return cell
     }
 }
@@ -128,6 +127,7 @@ extension ContactsViewController: UITableViewDelegate {
         let item = realArray[indexPath.row]
         let callAction = UIContextualAction(style: .destructive, title: "Call Private", handler: { (action, view, success) in
             self.service.dialNumber(number: item.telephone, prefixNumber: true)
+            CallHistoryViewController().saveHistoryData(firstName: item.firstName, lastName: item.lastName, telephone: item.telephone)
         })
         callAction.backgroundColor = .systemGreen
         return UISwipeActionsConfiguration(actions: [callAction])
@@ -135,7 +135,7 @@ extension ContactsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let item = realArray[indexPath.row]
-        service.showCallAction(vc: self, telephone: item.telephone)
+        service.showCallAction(vc: self, telephone: item.telephone, firstName: item.firstName, lastName: item.lastName)
     }
 }
 
