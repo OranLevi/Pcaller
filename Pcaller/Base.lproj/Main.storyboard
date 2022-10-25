@@ -333,7 +333,7 @@
                                                     <state key="normal" title="Button"/>
                                                     <buttonConfiguration key="configuration" style="plain" title="Reset Setting"/>
                                                     <connections>
-                                                        <action selector="clearAllButton:" destination="Zv1-EG-7sM" eventType="touchUpInside" id="eDf-UG-cUG"/>
+                                                        <action selector="resetSettingButton:" destination="Zv1-EG-7sM" eventType="touchUpInside" id="s5G-VF-zW4"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -354,6 +354,9 @@
                                                     <rect key="frame" x="150" y="4.3333333333333321" width="90" height="35"/>
                                                     <state key="normal" title="Button"/>
                                                     <buttonConfiguration key="configuration" style="plain" title="Clear all "/>
+                                                    <connections>
+                                                        <action selector="clearAllButton:" destination="Zv1-EG-7sM" eventType="touchUpInside" id="uWe-nL-d8c"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>
@@ -512,6 +515,9 @@
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="r7f-Jy-EA3">
                                                 <rect key="frame" x="0.0" y="0.0" width="51" height="31"/>
                                                 <color key="onTintColor" name="AccentColor"/>
+                                                <connections>
+                                                    <action selector="saveToHistorySwitch:" destination="sKm-ie-6PX" eventType="valueChanged" id="XeG-Wz-YMT"/>
+                                                </connections>
                                             </switch>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Save to History" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m7u-5d-AEb">
                                                 <rect key="frame" x="57.000000000000021" y="0.0" width="114.33333333333331" height="31"/>

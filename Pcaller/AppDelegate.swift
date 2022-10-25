@@ -14,7 +14,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var callObserver: CXCallObserver! // add property
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         callObserver = CXCallObserver()
         callObserver.setDelegate(self, queue: nil)

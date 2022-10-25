@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 enum SegmentIndex: Int {
     case firstName = 0
@@ -119,6 +120,45 @@ class Service {
         Service.firstNameHistory = firstName
         Service.lastNameHistory = lastName
         Service.telephoneHistory = telephone
+    }
+    func DeleteAllData(entity: String){
+
+
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let managedContext = appDelegate.persistentContainer.viewContext
+        let DelAllReqVar = NSBatchDeleteRequest(fetchRequest: NSFetchRequest<NSFetchRequestResult>(entityName: entity))
+        do {
+            try managedContext.execute(DelAllReqVar)
+        }
+        catch {
+            print(error)
+        }
+    }
+    
+    func showAlert(vc: UIViewController,title: String, message: String, completion: @escaping () -> Void) {
+
+        let dialogMessage = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        // Create OK button with action handler
+        let ok = UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
+          
+            
+
+            completion()
+
+            
+            
+        })
+        // Create Cancel button with action handlder
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) -> Void in
+            print("Cancel button tapped")
+        }
+        //Add OK and Cancel button to an Alert object
+        dialogMessage.addAction(ok)
+        dialogMessage.addAction(cancel)
+        // Present alert message to user
+        vc.present(dialogMessage, animated: true, completion: nil)
+
+     
     }
 }
 

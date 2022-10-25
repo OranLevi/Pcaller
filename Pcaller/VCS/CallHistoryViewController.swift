@@ -74,6 +74,7 @@ class CallHistoryViewController: UIViewController {
                 print("## Fetch Failed")
             }
         }
+    
 }
 
 extension CallHistoryViewController: UITableViewDataSource{
@@ -89,7 +90,7 @@ extension CallHistoryViewController: UITableViewDataSource{
         let thisHistory: HistoryData
         thisHistory = historyList[indexPath.row]
         
-        cell.firstAndLastNameLabel.text = thisHistory.firstName + thisHistory.lastName
+        cell.firstAndLastNameLabel.text = "\(thisHistory.firstName) \(thisHistory.lastName)"
         cell.telePhone.text = thisHistory.telephone
         cell.timeDateLabel.text = thisHistory.time
         return cell

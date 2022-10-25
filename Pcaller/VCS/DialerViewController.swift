@@ -49,6 +49,7 @@ class DialerViewController: UIViewController {
         
         if UserDefaults.standard.string(forKey: NameAutoSwitchUserDefaults.saveToHistory.rawValue) == "isOn" || UserDefaults.standard.string(forKey: NameAutoSwitchUserDefaults.saveToHistory.rawValue) == nil {
             saveToHistorySwitch.isOn = true
+            service.saveToHistory = true
         } else {
             saveToHistorySwitch.isOn = false
             service.saveToHistory = false
@@ -138,6 +139,14 @@ class DialerViewController: UIViewController {
             numberDisplayLabel.text = numberDisplay
         }
         print(numberDisplay)
+    }
+    
+    @IBAction func saveToHistorySwitch(_ sender: Any) {
+        if saveToHistorySwitch.isOn {
+            service.saveToHistory = true
+        } else {
+            service.saveToHistory = false
+        }
     }
     
     @IBAction func dialerTabButton(_ sender: Any) {

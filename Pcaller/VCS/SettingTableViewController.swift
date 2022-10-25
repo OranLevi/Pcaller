@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 class SettingTableViewController: UITableViewController {
     
@@ -113,17 +114,61 @@ class SettingTableViewController: UITableViewController {
         }
     }
     
-    @IBAction func resetSettingButton(_ sender: Any) {
-        if let appDomain = Bundle.main.bundleIdentifier {
-       UserDefaults.standard.removePersistentDomain(forName: appDomain)
-        }
-        startupSetting()
-    }
     
     func startupSetting(){
         setupButton()
         prefixText.text = service.textReplaced(text: service.prefix, fromHashtag: false)
     }
+    
+    @IBAction func resetSettingButton(_ sender: Any) {
+        
+        service.showAlert(vc: self, title: "Confirm" , message: "Are you sure you want to reset Setting?") {
+            if let appDomain = Bundle.main.bundleIdentifier {
+                UserDefaults.standard.removePersistentDomain(forName: appDomain)
+            }
+            self.startupSetting()
+            self.autoSaveToHistorySwitch.isOn = true
+            self.autoHideMyNumberSwitch.isOn = true
+            
+        }
+
+        
+    }
+    
+    
+    @IBAction func clearAllButton(_ sender: Any) {
+//        let dialogMessage = UIAlertController(title: "Confirm", message: "Are you sure you want to delete all Data (All Call History and App Setting)?", preferredStyle: .alert)
+//        // Create OK button with action handler
+//        let ok = UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
+//
+//
+//            if let appDomain = Bundle.main.bundleIdentifier {
+//                UserDefaults.standard.removePersistentDomain(forName: appDomain)
+//            }
+//            self.startupSetting()
+//            self.service.DeleteAllData(entity: "HistoryData")
+//
+//
+//
+//        })
+//        // Create Cancel button with action handlder
+//        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) -> Void in
+//            print("Cancel button tapped")
+//        }
+//        //Add OK and Cancel button to an Alert object
+//        dialogMessage.addAction(ok)
+//        dialogMessage.addAction(cancel)
+//        // Present alert message to user
+//        self.present(dialogMessage, animated: true, completion: nil)
+        service.showAlert(vc: self, title: "Confirm" , message: "Are you sure you want to delete all Data (All Call History and App Setting)?") {
+            if let appDomain = Bundle.main.bundleIdentifier {
+                UserDefaults.standard.removePersistentDomain(forName: appDomain)
+            }
+            self.startupSetting()
+            self.service.DeleteAllData(entity: "HistoryData")
+        }
+    }
+    
     
     func setupButton(){
         
@@ -135,6 +180,8 @@ class SettingTableViewController: UITableViewController {
             segmentSwitch(switchOn: telephoneNameSwitch)
         }
     }
+    
+    
 }
 
 
