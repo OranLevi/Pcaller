@@ -143,11 +143,11 @@ class DialerViewController: UIViewController {
     @IBAction func dialerTabButton(_ sender: Any) {
         if hideMyNumberSwitch.isOn {
             service.dialNumber(number: numberDisplay, prefixNumber: true)
-            CallHistoryViewController().saveHistoryData(firstName: "", lastName: "", telephone: numberDisplayLabel.text ?? "??")
+            self.service.setupCallerId(firstName: "", lastName: "", telephone: numberDisplayLabel.text ?? "??")
         }
         else {
             service.dialNumber(number: numberDisplay, prefixNumber: false)
-            CallHistoryViewController().saveHistoryData(firstName: "", lastName: "", telephone: numberDisplayLabel.text ?? "??")
+            self.service.setupCallerId(firstName: "", lastName: "", telephone: numberDisplayLabel.text ?? "??")
         }
     }
 }

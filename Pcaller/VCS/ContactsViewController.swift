@@ -127,7 +127,7 @@ extension ContactsViewController: UITableViewDelegate {
         let item = realArray[indexPath.row]
         let callAction = UIContextualAction(style: .destructive, title: "Call Private", handler: { (action, view, success) in
             self.service.dialNumber(number: item.telephone, prefixNumber: true)
-            CallHistoryViewController().saveHistoryData(firstName: item.firstName, lastName: item.lastName, telephone: item.telephone)
+            self.service.setupCallerId(firstName: item.firstName, lastName: item.lastName, telephone: item.telephone)
         })
         callAction.backgroundColor = .systemGreen
         return UISwipeActionsConfiguration(actions: [callAction])

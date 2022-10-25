@@ -28,6 +28,10 @@ class Service {
     var selectedIndexSegment = SegmentIndex.firstName
     var saveToHistory = true
 
+    static var firstNameHistory = ""
+    static var lastNameHistory = ""
+    static var telephoneHistory = ""
+    
     func messageAccess(vc: UIViewController){
         DispatchQueue.main.async {
             
@@ -65,13 +69,13 @@ class Service {
         let alert = UIAlertController(title: "Select an action", message: "Please Select an Action", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Call regular", style: .default, handler: { (_) in
             self.dialNumber(number: telephone, prefixNumber: false)
-            CallHistoryViewController().saveHistoryData(firstName: firstName, lastName: lastName, telephone: telephone)
+            self.setupCallerId(firstName: firstName, lastName: lastName, telephone: telephone)
         }))
         
         alert.addAction(UIAlertAction(title: "Call with Private number", style: .destructive, handler: { (_) in
             print(self.dialNumber(number: telephone, prefixNumber: true))
             self.dialNumber(number: telephone, prefixNumber: true)
-            CallHistoryViewController().saveHistoryData(firstName: firstName, lastName: lastName, telephone: telephone)
+            self.setupCallerId(firstName: firstName, lastName: lastName, telephone: telephone)
         }))
         
         alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: { (_) in
@@ -109,6 +113,12 @@ class Service {
             let replaced2 = replaced.replacingOccurrences(of: "#", with: "%23")
             return replaced2
         }
+    }
+    
+    func setupCallerId(firstName: String, lastName: String, telephone: String){
+        Service.firstNameHistory = firstName
+        Service.lastNameHistory = lastName
+        Service.telephoneHistory = telephone
     }
 }
 

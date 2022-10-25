@@ -7,13 +7,17 @@
 
 import UIKit
 import CoreData
+import CallKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    var callObserver: CXCallObserver! // add property
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        callObserver = CXCallObserver()
+        callObserver.setDelegate(self, queue: nil)
         // Override point for customization after application launch.
         return true
     }
@@ -76,3 +80,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 }
 
+extension AppDelegate: CXCallObserverDelegate {
+    func callObserver(_ callObserver: CXCallObserver, callChanged call: CXCall) {
+        if call.isOutgoing == true && call.hasConnected == false && call.hasEnded == false {
+            print("detect a dialing outgoing call")
+            CallHistoryViewController().saveHistoryData(firstName: Service.firstNameHistory, lastName: Service.lastNameHistory, telephone: Service.telephoneHistory)
+          }
+    }
+}
