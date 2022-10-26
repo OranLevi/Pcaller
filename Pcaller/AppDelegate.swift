@@ -83,7 +83,7 @@ extension AppDelegate: CXCallObserverDelegate {
     func callObserver(_ callObserver: CXCallObserver, callChanged call: CXCall) {
         if call.isOutgoing == true && call.hasConnected == false && call.hasEnded == false {
             print("detect a dialing outgoing call")
-            CallHistoryViewController().saveHistoryData(firstName: Service.firstNameHistory, lastName: Service.lastNameHistory, telephone: Service.telephoneHistory)
+            Service().saveHistoryData(firstName: Service.firstNameHistory, lastName: Service.lastNameHistory, telephone: Service.telephoneHistory)
           }
     }
 }

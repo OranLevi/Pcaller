@@ -28,11 +28,11 @@ class DialerViewController: UIViewController {
     
     var numberDisplay = ""
     var service = Service.shared
-   
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCornerRadiusButton()
-     
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -49,10 +49,10 @@ class DialerViewController: UIViewController {
         
         if UserDefaults.standard.string(forKey: NameAutoSwitchUserDefaults.saveToHistory.rawValue) == "isOn" || UserDefaults.standard.string(forKey: NameAutoSwitchUserDefaults.saveToHistory.rawValue) == nil {
             saveToHistorySwitch.isOn = true
-            service.saveToHistory = true
+            Service.saveToHistory = true
         } else {
             saveToHistorySwitch.isOn = false
-            service.saveToHistory = false
+            Service.saveToHistory = false
         }
     }
     
@@ -143,13 +143,21 @@ class DialerViewController: UIViewController {
     
     @IBAction func saveToHistorySwitch(_ sender: Any) {
         if saveToHistorySwitch.isOn {
-            service.saveToHistory = true
+            Service.saveToHistory = true
+            print(Service.saveToHistory)
         } else {
-            service.saveToHistory = false
+            Service.saveToHistory = false
+            print(Service.saveToHistory)
         }
     }
     
     @IBAction func dialerTabButton(_ sender: Any) {
+        if numberDisplayLabel.text!.isEmpty  {
+            service.showAlert(vc: self, title: "Error", message: "You are not enter valid number") {
+                print("## valid number")
+            }
+            return
+        }
         if hideMyNumberSwitch.isOn {
             service.dialNumber(number: numberDisplay, prefixNumber: true)
             self.service.setupCallerId(firstName: "", lastName: "", telephone: numberDisplayLabel.text ?? "??")

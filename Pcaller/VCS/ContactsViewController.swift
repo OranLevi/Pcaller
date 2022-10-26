@@ -116,7 +116,7 @@ extension ContactsViewController: UITableViewDataSource {
         cell.firstNameLabel.text = item.firstName
         cell.lastNameLabel.text = item.lastName
         cell.telephoneLabel.text = item.telephone
-
+        
         return cell
     }
 }
@@ -125,15 +125,18 @@ extension ContactsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let item = realArray[indexPath.row]
-        let callAction = UIContextualAction(style: .destructive, title: "Call Private", handler: { (action, view, success) in
+        let callAction = UIContextualAction(style: .normal, title: "Call Private", handler: { (action, view, success) in
             self.service.dialNumber(number: item.telephone, prefixNumber: true)
             self.service.setupCallerId(firstName: item.firstName, lastName: item.lastName, telephone: item.telephone)
         })
         callAction.backgroundColor = .systemGreen
-        return UISwipeActionsConfiguration(actions: [callAction])
+
+        let configuration = UISwipeActionsConfiguration(actions: [callAction])
+        return configuration
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        contactsTableView.deselectRow(at: indexPath, animated: true)
         let item = realArray[indexPath.row]
         service.showCallAction(vc: self, telephone: item.telephone, firstName: item.firstName, lastName: item.lastName)
     }

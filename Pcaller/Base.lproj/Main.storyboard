@@ -474,7 +474,7 @@
                             <constraint firstItem="QRg-PW-Vr6" firstAttribute="bottom" secondItem="70J-ya-aFy" secondAttribute="bottom" id="Blr-w4-zTn"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Call History" id="xLZ-ze-5HC"/>
+                    <tabBarItem key="tabBarItem" title="Call History" image="character.book.closed.fill" catalog="system" id="xLZ-ze-5HC"/>
                     <connections>
                         <outlet property="callHistoryTableView" destination="70J-ya-aFy" id="yCz-gm-Ci3"/>
                     </connections>
@@ -825,7 +825,7 @@
         <scene sceneID="dzw-g9-A8Y">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="blD-rP-83y" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Settings" id="Y13-2P-H6B"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="square.grid.3x3.topright.filled" catalog="system" id="Y13-2P-H6B"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="wP4-yS-q6H">
                         <rect key="frame" x="0.0" y="47" width="390" height="44"/>
@@ -842,10 +842,12 @@
         </scene>
     </scenes>
     <resources>
+        <image name="character.book.closed.fill" catalog="system" width="115" height="128"/>
         <image name="delete.left" catalog="system" width="128" height="102"/>
         <image name="person.crop.square" catalog="system" width="128" height="114"/>
         <image name="phone" catalog="system" width="128" height="115"/>
         <image name="phone.circle.fill" catalog="system" width="128" height="123"/>
+        <image name="square.grid.3x3.topright.filled" catalog="system" width="128" height="113"/>
         <namedColor name="AccentColor">
             <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
