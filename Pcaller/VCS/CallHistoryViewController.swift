@@ -54,7 +54,7 @@ extension CallHistoryViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let delete = UIContextualAction(style: .destructive, title: "Delete") {  (contextualAction, view, boolValue) in
+        let delete = UIContextualAction(style: .destructive, title: "Delete") {  (contextualAction, view, success) in
             
             _ = tableView.cellForRow(at: indexPath)! as UITableViewCell
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -69,9 +69,12 @@ extension CallHistoryViewController: UITableViewDelegate {
                 print ("## error")
             }
         }
-        let call = UIContextualAction(style: .normal, title: "Call Private") {  (contextualAction, view, boolValue) in
+        let call = UIContextualAction(style: .normal, title: "Call Private") {  (contextualAction, view, success) in
             let item = self.service.historyList[indexPath.row]
-            self.service.showCallAction(vc: self, telephone: item.telephone, firstName: item.firstName, lastName: item.lastName)
+            let telephone = item.telephone.removeCharacters(from: CharacterSet.decimalDigits.inverted)
+            self.service.dialNumber(number: telephone, prefixNumber: true)
+            self.service.setupCallerId(firstName: item.firstName, lastName: item.lastName, telephone: item.telephone)
+            success(true)
         }
         
         call.backgroundColor = UIColor.systemGreen

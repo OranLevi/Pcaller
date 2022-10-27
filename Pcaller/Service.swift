@@ -77,12 +77,13 @@ class Service {
         
         let alert = UIAlertController(title: "Select an action", message: "Please Select an Action", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Call regular", style: .default, handler: { (_) in
+            let telephone = telephone.removeCharacters(from: CharacterSet.decimalDigits.inverted)
             self.dialNumber(number: telephone, prefixNumber: false)
             self.setupCallerId(firstName: firstName, lastName: lastName, telephone: telephone)
         }))
         
         alert.addAction(UIAlertAction(title: "Call with Private number", style: .destructive, handler: { (_) in
-            print(self.dialNumber(number: telephone, prefixNumber: true))
+            let telephone = telephone.removeCharacters(from: CharacterSet.decimalDigits.inverted)
             self.dialNumber(number: telephone, prefixNumber: true)
             self.setupCallerId(firstName: firstName, lastName: lastName, telephone: telephone)
         }))
@@ -117,11 +118,17 @@ class Service {
     
     func dialNumber(number : String, prefixNumber: Bool) {
         
-        let number = number.removeCharacters(from: CharacterSet.decimalDigits.inverted)
+           
+        
+//            let number = number.removeCharacters(from: CharacterSet.decimalDigits.inverted)
+        
+//        Service.callFromContacts = false
         prefix = UserDefaults.standard.string(forKey: "Prefix") ?? "%2331%23"
+        
         if prefixNumber == false {
             prefix = ""
         }
+        
         if let url = URL(string: "tel://\(prefix)\(number)"), UIApplication.shared.canOpenURL(url) {
             print(url)
             if #available(iOS 10, *) {
@@ -130,6 +137,7 @@ class Service {
                 UIApplication.shared.openURL(url)
             }
         }
+        
     }
     
 //MARK: - CoreData
@@ -210,6 +218,7 @@ class Service {
         Service.firstNameHistory = firstName
         Service.lastNameHistory = lastName
         Service.telephoneHistory = telephone
+        
     }
 
     

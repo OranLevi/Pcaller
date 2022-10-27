@@ -126,11 +126,13 @@ extension ContactsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let item = realArray[indexPath.row]
         let callAction = UIContextualAction(style: .normal, title: "Call Private", handler: { (action, view, success) in
-            self.service.dialNumber(number: item.telephone, prefixNumber: true)
+            let telephone = item.telephone.removeCharacters(from: CharacterSet.decimalDigits.inverted)
+            self.service.dialNumber(number: telephone, prefixNumber: true)
             self.service.setupCallerId(firstName: item.firstName, lastName: item.lastName, telephone: item.telephone)
+            success(true)
         })
+        
         callAction.backgroundColor = .systemGreen
-
         let configuration = UISwipeActionsConfiguration(actions: [callAction])
         return configuration
     }
