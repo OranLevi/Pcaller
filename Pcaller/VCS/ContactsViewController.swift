@@ -62,8 +62,13 @@ class ContactsViewController: UIViewController {
             filteredData = contacts.sorted { $0.lastName.lowercased() < $1.lastName.lowercased() }
         case 2:
             filteredData = contacts.sorted { $0.telephone.lowercased() < $1.telephone.lowercased() }
+
         default:
             print("##")
+        }
+        
+        if isSearching {
+            searchBarCancelButtonClicked(searchBar)
         }
         contactsTableView.reloadData()
     }
@@ -153,7 +158,7 @@ extension ContactsViewController: UISearchBarDelegate {
         } else {
             isSearching = true
             filteredData = contacts.filter {name in
-                return   name.firstName.contains(searchText.lowercased()) || name.lastName.contains(searchText.lowercased()) ||  name.telephone.contains(searchText.lowercased())
+                return   name.firstName.lowercased().contains(searchText.lowercased()) || name.lastName.lowercased().contains(searchText.lowercased()) ||  name.telephone.lowercased().contains(searchText.lowercased())
             }
             contactsTableView.reloadData()
         }
@@ -168,6 +173,7 @@ extension ContactsViewController: UISearchBarDelegate {
         searchBar.showsCancelButton = false
         searchBar.endEditing(true)
         isSearching = false
+        isSegmentedControl = false
         contactsTableView.reloadData()
     }
 }

@@ -85,7 +85,7 @@ class SettingTableViewController: UITableViewController {
     
     @IBAction func resetSettingButton(_ sender: Any) {
         
-        service.showAlert(vc: self, title: "Confirm" , message: "Are you sure you want to reset Setting?") {
+        service.showAlert(vc: self, title: "Confirm" , message: "Are you sure you want to reset Setting?", cancelButton: true) {
             if let appDomain = Bundle.main.bundleIdentifier {
                 UserDefaults.standard.removePersistentDomain(forName: appDomain)
             }
@@ -97,12 +97,12 @@ class SettingTableViewController: UITableViewController {
     }
     
     @IBAction func clearAllButton(_ sender: Any) {
-        service.showAlert(vc: self, title: "Confirm" , message: "Are you sure you want to delete all Data (All Call History and App Setting)?") {
+        service.showAlert(vc: self, title: "Confirm" , message: "Are you sure you want to delete all Data (All Call History and App Setting)?", cancelButton: true) {
             if let appDomain = Bundle.main.bundleIdentifier {
                 UserDefaults.standard.removePersistentDomain(forName: appDomain)
             }
             self.startupSetting()
-            self.service.DeleteAllData(entity: "HistoryData")
+            self.service.deleteAllData(entity: "HistoryData")
             self.autoSaveToHistorySwitch.isOn = true
             self.autoHideMyNumberSwitch.isOn = true
             self.prefixText.text = "#31#"

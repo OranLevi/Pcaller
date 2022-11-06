@@ -153,8 +153,8 @@ class DialerViewController: UIViewController {
     
     @IBAction func dialerTabButton(_ sender: Any) {
         if numberDisplayLabel.text!.isEmpty  {
-            service.showAlert(vc: self, title: "Error", message: "You are not enter valid number") {
-                print("## valid number")
+            service.showAlert(vc: self, title: "Error", message: "You are not enter valid number", cancelButton: false) {
+                print("## Valid number")
             }
             return
         }

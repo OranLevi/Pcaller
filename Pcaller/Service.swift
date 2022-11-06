@@ -96,21 +96,23 @@ class Service {
         })
     }
     
-    func showAlert(vc: UIViewController,title: String, message: String, completion: @escaping () -> Void) {
+    func showAlert(vc: UIViewController,title: String, message: String, cancelButton: Bool, completion: @escaping () -> Void) {
 
         let dialogMessage = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        // Create OK button with action handler
+
         let ok = UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
             completion()
         })
-        // Create Cancel button with action handlder
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) -> Void in
-            print("Cancel button tapped")
+        if cancelButton == true {
+            let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) -> Void in
+                print("Cancel button tapped")
+            }
+            dialogMessage.addAction(cancel)
         }
-        //Add OK and Cancel button to an Alert object
+        
+
         dialogMessage.addAction(ok)
-        dialogMessage.addAction(cancel)
-        // Present alert message to user
+       
         vc.present(dialogMessage, animated: true, completion: nil)
     }
     
@@ -118,11 +120,6 @@ class Service {
     
     func dialNumber(number : String, prefixNumber: Bool) {
         
-           
-        
-//            let number = number.removeCharacters(from: CharacterSet.decimalDigits.inverted)
-        
-//        Service.callFromContacts = false
         prefix = UserDefaults.standard.string(forKey: "Prefix") ?? "%2331%23"
         
         if prefixNumber == false {
@@ -189,7 +186,7 @@ class Service {
             }
         }
     
-    func DeleteAllData(entity: String){
+    func deleteAllData(entity: String){
 
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let managedContext = appDelegate.persistentContainer.viewContext
