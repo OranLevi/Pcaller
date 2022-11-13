@@ -83,7 +83,7 @@
                                     <constraint firstAttribute="height" constant="40" id="8kv-A3-XPs"/>
                                 </constraints>
                                 <segments>
-                                    <segment title="Fist Name"/>
+                                    <segment title="First Name"/>
                                     <segment title="Last Name"/>
                                     <segment title="Telephone"/>
                                 </segments>
@@ -214,8 +214,8 @@
                                                         <action selector="SwitchAutoSaveToHistory:" destination="Zv1-EG-7sM" eventType="valueChanged" id="jDt-QY-odE"/>
                                                     </connections>
                                                 </switch>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Auto switch on save to History calls" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0RF-sL-gAU">
-                                                    <rect key="frame" x="81" y="11.5" width="269" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Auto switch on Save to Calls History" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0RF-sL-gAU">
+                                                    <rect key="frame" x="81" y="11.5" width="273" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -329,9 +329,9 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T5m-0S-LDH">
-                                                    <rect key="frame" x="144" y="4.5" width="126" height="35"/>
+                                                    <rect key="frame" x="141" y="4.5" width="132.5" height="35"/>
                                                     <state key="normal" title="Button"/>
-                                                    <buttonConfiguration key="configuration" style="plain" title="Reset Setting"/>
+                                                    <buttonConfiguration key="configuration" style="plain" title="Reset settings"/>
                                                     <connections>
                                                         <action selector="resetSettingButton:" destination="Zv1-EG-7sM" eventType="touchUpInside" id="s5G-VF-zW4"/>
                                                     </connections>
@@ -388,7 +388,7 @@
             </objects>
             <point key="canvasLocation" x="1140" y="-366.11374407582935"/>
         </scene>
-        <!--Call History-->
+        <!--Calls History-->
         <scene sceneID="u2e-XT-CIC">
             <objects>
                 <viewController id="tyP-hY-zuw" customClass="CallHistoryViewController" customModule="Pcaller" customModuleProvider="target" sceneMemberID="viewController">
@@ -474,7 +474,7 @@
                             <constraint firstItem="QRg-PW-Vr6" firstAttribute="bottom" secondItem="70J-ya-aFy" secondAttribute="bottom" id="Blr-w4-zTn"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Call History" image="text.book.closed" catalog="system" id="xLZ-ze-5HC"/>
+                    <tabBarItem key="tabBarItem" title="Calls History" image="text.book.closed" catalog="system" id="xLZ-ze-5HC"/>
                     <connections>
                         <outlet property="callHistoryTableView" destination="70J-ya-aFy" id="yCz-gm-Ci3"/>
                     </connections>

@@ -76,13 +76,13 @@ class Service {
     func showCallAction(vc: UIViewController, telephone: String, firstName: String, lastName: String) {
         
         let alert = UIAlertController(title: "Select an action", message: "Please Select an Action", preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "Call regular", style: .default, handler: { (_) in
+        alert.addAction(UIAlertAction(title: "Call normally", style: .default, handler: { (_) in
             let telephone = telephone.removeCharacters(from: CharacterSet.decimalDigits.inverted)
             self.dialNumber(number: telephone, prefixNumber: false)
             self.setupCallerId(firstName: firstName, lastName: lastName, telephone: telephone)
         }))
         
-        alert.addAction(UIAlertAction(title: "Call with Private number", style: .destructive, handler: { (_) in
+        alert.addAction(UIAlertAction(title: "Call Private number", style: .destructive, handler: { (_) in
             let telephone = telephone.removeCharacters(from: CharacterSet.decimalDigits.inverted)
             self.dialNumber(number: telephone, prefixNumber: true)
             self.setupCallerId(firstName: firstName, lastName: lastName, telephone: telephone)
