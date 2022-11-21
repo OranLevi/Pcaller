@@ -6,13 +6,14 @@
 //
 
 import UIKit
+import StoreKit
+import KeychainSwift
 
 class DialerViewController: UIViewController {
     
     @IBOutlet weak var hideMyNumberSwitch: UISwitch!
     @IBOutlet weak var saveToHistorySwitch: UISwitch!
     @IBOutlet weak var numberDisplayLabel: UILabel!
-    
     @IBOutlet weak var oneButton: UIButton!
     @IBOutlet weak var twoButton: UIButton!
     @IBOutlet weak var threeButton: UIButton!
@@ -25,18 +26,36 @@ class DialerViewController: UIViewController {
     @IBOutlet weak var zeroButton: UIButton!
     @IBOutlet weak var asteriskButton: UIButton!
     @IBOutlet weak var laderButton: UIButton!
+    @IBOutlet weak var trialVersionLabel: UILabel!
     
     var numberDisplay = ""
     var service = Service.shared
+    let keychain = KeychainSwift()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCornerRadiusButton()
-        
+//     keychain.clear()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         setupSwitches()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        setupLabel()
+        print("## Update Label")
+    }
+    
+    func setupLabel() {
+        Service.numberAttempts = 0
+        if (keychain.get("userBuy") != nil) == true {
+            trialVersionLabel.isHidden = true
+            return
+        }
+        trialVersionLabel.text = """
+Trial Version \(Service.numberAttempts ?? 0) Call left
+"""
     }
     
     func setupSwitches(){
@@ -158,13 +177,29 @@ class DialerViewController: UIViewController {
             }
             return
         }
-        if hideMyNumberSwitch.isOn {
-            service.dialNumber(number: numberDisplay, prefixNumber: true)
-            self.service.setupCallerId(firstName: "", lastName: "", telephone: numberDisplayLabel.text ?? "??")
+        if self.hideMyNumberSwitch.isOn {
+            self.service.dialNumber(number: self.numberDisplay, prefixNumber: true, vc: self)
+            self.service.setupCallerId(firstName: "", lastName: "", telephone: self.numberDisplayLabel.text ?? "??")
         }
         else {
-            service.dialNumber(number: numberDisplay, prefixNumber: false)
-            self.service.setupCallerId(firstName: "", lastName: "", telephone: numberDisplayLabel.text ?? "??")
+            self.service.dialNumber(number: self.numberDisplay, prefixNumber: false, vc: self)
+            self.service.setupCallerId(firstName: "", lastName: "", telephone: self.numberDisplayLabel.text ?? "??")
+        }
+    }
+    
+    func showCallRemained(){
+        switch keychain.get("checkIfTrial") {
+        case "3attempts": service.showAlert(vc: self, title: "Call remained", message: "Only 3 attempts", cancelButton: false) {
+            print("## Only more 3 attempts")
+        }
+        case "2attempts": service.showAlert(vc: self, title: "Call remained", message: "Only more 2 attempts", cancelButton: false) {
+            print("## Only more 2 attempts")
+        }
+        case "1attempts": service.showAlert(vc: self, title: "Call remained", message: "Only more 1 attempts", cancelButton: false) {
+            print("## Only more 1 attempts")
+        }
+        default:
+            break
         }
     }
 }

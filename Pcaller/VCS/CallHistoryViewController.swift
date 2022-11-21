@@ -21,11 +21,11 @@ class CallHistoryViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+
         service.retrieveData()
         callHistoryTableView.reloadData()
         
     }
-    
 }
 
 extension CallHistoryViewController: UITableViewDataSource{
@@ -72,7 +72,7 @@ extension CallHistoryViewController: UITableViewDelegate {
         let call = UIContextualAction(style: .normal, title: "Call Private") {  (contextualAction, view, success) in
             let item = self.service.historyList[indexPath.row]
             let telephone = item.telephone.removeCharacters(from: CharacterSet.decimalDigits.inverted)
-            self.service.dialNumber(number: telephone, prefixNumber: true)
+            self.service.dialNumber(number: telephone, prefixNumber: true, vc: self)
             self.service.setupCallerId(firstName: item.firstName, lastName: item.lastName, telephone: item.telephone)
             success(true)
         }

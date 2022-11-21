@@ -8,12 +8,14 @@
 import UIKit
 import CoreData
 import CallKit
+import KeychainSwift
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var callObserver: CXCallObserver! // add property
-
+    let keychain = KeychainSwift()
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         callObserver = CXCallObserver()
         callObserver.setDelegate(self, queue: nil)
@@ -84,6 +86,9 @@ extension AppDelegate: CXCallObserverDelegate {
         if call.isOutgoing == true && call.hasConnected == false && call.hasEnded == false {
             print("detect a dialing outgoing call")
             Service().saveHistoryData(firstName: Service.firstNameHistory, lastName: Service.lastNameHistory, telephone: Service.telephoneHistory)
+            if keychain.get("userBuy") == nil {
+                Service().isTrial()
+            }
           }
     }
 }

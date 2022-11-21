@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreData
+import KeychainSwift
 
 enum SegmentIndex: Int {
     case firstName = 0
@@ -27,6 +28,17 @@ class Service {
     //* with %2A and # with %23
     var prefix = UserDefaults.standard.string(forKey: "Prefix") ?? "%2331%23"
     var selectedIndexSegment = SegmentIndex.firstName
+    static var numberAttempts: Int? {
+        didSet {
+            switch Service().keychain.get("checkIfTrial") {
+            case "2attempts": return numberAttempts = 2
+            case "1attempts": return numberAttempts = 1
+            case "0attempts": return numberAttempts = 0
+            default: return numberAttempts = 3
+            }
+        }
+    }
+    
     static var saveToHistory = true
     
     var historyList = [HistoryData](){
@@ -34,7 +46,9 @@ class Service {
             historyList = historyList.sorted(by: {  $0.time > $1.time })
            }
     }
-
+    
+    let keychain = KeychainSwift()
+    
     static var firstNameHistory = ""
     static var lastNameHistory = ""
     static var telephoneHistory = ""
@@ -78,13 +92,13 @@ class Service {
         let alert = UIAlertController(title: "Select an action", message: "Please Select an Action", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Call normally", style: .default, handler: { (_) in
             let telephone = telephone.removeCharacters(from: CharacterSet.decimalDigits.inverted)
-            self.dialNumber(number: telephone, prefixNumber: false)
+            self.dialNumber(number: telephone, prefixNumber: false, vc: vc)
             self.setupCallerId(firstName: firstName, lastName: lastName, telephone: telephone)
         }))
         
         alert.addAction(UIAlertAction(title: "Call Private number", style: .destructive, handler: { (_) in
             let telephone = telephone.removeCharacters(from: CharacterSet.decimalDigits.inverted)
-            self.dialNumber(number: telephone, prefixNumber: true)
+            self.dialNumber(number: telephone, prefixNumber: true, vc: vc)
             self.setupCallerId(firstName: firstName, lastName: lastName, telephone: telephone)
         }))
         
@@ -116,9 +130,27 @@ class Service {
         vc.present(dialogMessage, animated: true, completion: nil)
     }
     
+    func isTrial(){
+        if  keychain.get("checkIfTrial") == nil{
+            keychain.set("3attempts", forKey: "checkIfTrial")
+        }
+
+        switch keychain.get("checkIfTrial") {
+        case "3attempts": keychain.set("2attempts", forKey: "checkIfTrial")
+//            numberAttempts = 2
+        case "2attempts": keychain.set("1attempts", forKey: "checkIfTrial")
+//            numberAttempts = 1
+        case "1attempts": keychain.set("0attempts", forKey: "checkIfTrial")
+//            numberAttempts = 0
+        default:
+            break
+        }
+    }
+
+    
 //MARK: - Dialer func
     
-    func dialNumber(number : String, prefixNumber: Bool) {
+    func dialNumber(number : String, prefixNumber: Bool, vc: UIViewController) {
         
         prefix = UserDefaults.standard.string(forKey: "Prefix") ?? "%2331%23"
         
@@ -127,12 +159,18 @@ class Service {
         }
         
         if let url = URL(string: "tel://\(prefix)\(number)"), UIApplication.shared.canOpenURL(url) {
-            print(url)
-            if #available(iOS 10, *) {
-                UIApplication.shared.open(url)
-            } else {
-                UIApplication.shared.openURL(url)
+            print("## user dial : \(url)")
+            if keychain.get("userBuy") == nil {
+                
+                if keychain.get("checkIfTrial") == "0attempts" {
+                    print("## end trial")
+                    showAlert(vc: vc, title: "Trial Version", message: "Trial version has ended please buy the full version", cancelButton: false) {
+                        print("## Trial version end Click Ok")
+                    }
+                    return
+                } 
             }
+            UIApplication.shared.open(url)
         }
         
     }
@@ -233,3 +271,5 @@ extension String {
         return removeCharacters(from: CharacterSet(charactersIn: from))
     }
 }
+
+

@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreData
+import KeychainSwift
 
 class SettingTableViewController: UITableViewController {
     
@@ -14,7 +15,9 @@ class SettingTableViewController: UITableViewController {
     
     var tapEditingPrefix = false
     var tapSavePrefix = false
-    
+    let keychain = KeychainSwift()
+
+  
     @IBOutlet weak var autoHideMyNumberSwitch: UISwitch!
     @IBOutlet weak var autoSaveToHistorySwitch: UISwitch!
     @IBOutlet weak var prefixText: UITextField!
@@ -22,6 +25,7 @@ class SettingTableViewController: UITableViewController {
     @IBOutlet weak var lastNameSwitch: UISwitch!
     @IBOutlet weak var telephoneNameSwitch: UISwitch!
     @IBOutlet weak var editButton: UIButton!
+    @IBOutlet weak var buyUnlimitedCallsButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,8 +34,12 @@ class SettingTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         setupSwitches()
+        setupButton()
     }
     
+    override func viewDidLayoutSubviews() {
+        setupButton()
+    }
     
     @IBAction func firstNameSwitchAction(_ sender: Any) {
         segmentSwitch(switchOn: firstNameSwitch)
@@ -109,6 +117,7 @@ class SettingTableViewController: UITableViewController {
         }
     }
     
+    
     func segmentSwitch(switchOn: UISwitch) {
         firstNameSwitch.isOn = false
         lastNameSwitch.isOn = false
@@ -144,6 +153,10 @@ class SettingTableViewController: UITableViewController {
     }
     
     func setupButton() {
+        if (keychain.get("userBuy") != nil) == true {
+            buyUnlimitedCallsButton.isEnabled = false
+            buyUnlimitedCallsButton.title = "Purchased App"
+        }
         
         if service.selectedIndexSegment == SegmentIndex.firstName{
             segmentSwitch(switchOn: firstNameSwitch)
