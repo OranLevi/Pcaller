@@ -20,7 +20,6 @@ enum NameAutoSwitchUserDefaults:String{
     case saveToHistory = "AutoSwitchSaveToHistory"
 }
 
-
 class Service {
     
     static let shared: Service = Service()
@@ -137,11 +136,8 @@ class Service {
 
         switch keychain.get("checkIfTrial") {
         case "3attempts": keychain.set("2attempts", forKey: "checkIfTrial")
-//            numberAttempts = 2
         case "2attempts": keychain.set("1attempts", forKey: "checkIfTrial")
-//            numberAttempts = 1
         case "1attempts": keychain.set("0attempts", forKey: "checkIfTrial")
-//            numberAttempts = 0
         default:
             break
         }

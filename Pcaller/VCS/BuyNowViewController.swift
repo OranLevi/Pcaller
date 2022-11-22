@@ -10,21 +10,20 @@ import StoreKit
 import KeychainSwift
 
 class BuyNowViewController: UIViewController, SKPaymentTransactionObserver{
-    
+
     @IBOutlet weak var buyStackView: UIStackView!
     @IBOutlet weak var imageApp: UIImageView!
     @IBOutlet weak var buyNowButton: UIButton!
-    
+
     var service = Service.shared
-    let productID = ""//hidden
-    
+    let productID = "com.Pcaller.buyUnlimitedCalls"
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
         SKPaymentQueue.default().add(self)
     }
-    
-    
+
     @IBAction func buyNowButton(_ sender: Any) {
         if SKPaymentQueue.canMakePayments() {
             buyNowButton.setTitle("Loading Please wait...", for: .normal)
@@ -37,7 +36,7 @@ class BuyNowViewController: UIViewController, SKPaymentTransactionObserver{
             print("## User unable to make payments")
         }
     }
-    
+
     func setupView(){
         imageApp.layer.cornerRadius = 20
         imageApp.layer.masksToBounds = true
@@ -60,28 +59,4 @@ class BuyNowViewController: UIViewController, SKPaymentTransactionObserver{
             }
         }
     }
-}
-extension SKProduct {
-
-    private static let formatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        return formatter
-    }()
-
-    var isFree: Bool {
-        price == 0.00
-    }
-
-    var localizedPrice: String? {
-        guard !isFree else {
-            return nil
-        }
-        
-        let formatter = SKProduct.formatter
-        formatter.locale = priceLocale
-
-        return formatter.string(from: price)
-    }
-
 }

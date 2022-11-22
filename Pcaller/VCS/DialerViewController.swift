@@ -35,7 +35,6 @@ class DialerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCornerRadiusButton()
-//        keychain.clear()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -45,7 +44,7 @@ class DialerViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         setupLabel()
-        print("## Update Label")
+        print("## Update Calls left Label")
     }
     
     func setupLabel() {
