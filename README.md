@@ -11,9 +11,22 @@ The application developed with storekit to embed In-App Purchase, to offer the u
 The user can calling until 3 times free calls after which the access to call from the application will be blocked.<br>
 If the user has not purchased unlimited package - even after deleting the application, the number of remaining call trials will be saved.
 
-## Screenshots
+## Screenshots App Store Version
   <p float="left">
     <img src="./Screenshot/iPhone/0.png" width="220" />&nbsp;&nbsp;
   <img src="./Screenshot/iPhone/1.png" width="220" />&nbsp;&nbsp;
   <img src="./Screenshot/iPhone/2.png" width="220" />&nbsp;&nbsp;
+</p>
+
+## Screenshots In-App Purchase Version
+  <p float="left">
+    <img src="./Screenshot/iPhone/0IAP.png" width="220" />&nbsp;&nbsp;
+  <img src="./Screenshot/iPhone/1IAP.png" width="220" />&nbsp;&nbsp;
+  <img src="./Screenshot/iPhone/2IAP.png" width="220" />&nbsp;&nbsp;
+</p>
+
+## Download From App Store
+<br>
+<p align="center">
+<a href="https://apps.apple.com/il/app/pcaller-private-call/id6444242223"><img src="./Screenshot/Download_App_Store.jpg"></a>
 </p>
