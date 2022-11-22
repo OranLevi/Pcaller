@@ -35,10 +35,11 @@ class DialerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCornerRadiusButton()
-//     keychain.clear()
+//        keychain.clear()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        setupLabel()
         setupSwitches()
     }
     
@@ -172,7 +173,7 @@ Trial Version \(Service.numberAttempts ?? 0) Call left
     
     @IBAction func dialerTabButton(_ sender: Any) {
         if numberDisplayLabel.text!.isEmpty  {
-            service.showAlert(vc: self, title: "Error", message: "You are not enter valid number", cancelButton: false) {
+            service.showAlert(vc: self, title: "Error", message: "You are not enter valid number", textTitleOk: "OK", cancelButton: false, style: .default) {
                 print("## Valid number")
             }
             return
@@ -184,22 +185,6 @@ Trial Version \(Service.numberAttempts ?? 0) Call left
         else {
             self.service.dialNumber(number: self.numberDisplay, prefixNumber: false, vc: self)
             self.service.setupCallerId(firstName: "", lastName: "", telephone: self.numberDisplayLabel.text ?? "??")
-        }
-    }
-    
-    func showCallRemained(){
-        switch keychain.get("checkIfTrial") {
-        case "3attempts": service.showAlert(vc: self, title: "Call remained", message: "Only 3 attempts", cancelButton: false) {
-            print("## Only more 3 attempts")
-        }
-        case "2attempts": service.showAlert(vc: self, title: "Call remained", message: "Only more 2 attempts", cancelButton: false) {
-            print("## Only more 2 attempts")
-        }
-        case "1attempts": service.showAlert(vc: self, title: "Call remained", message: "Only more 1 attempts", cancelButton: false) {
-            print("## Only more 1 attempts")
-        }
-        default:
-            break
         }
     }
 }

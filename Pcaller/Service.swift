@@ -110,11 +110,11 @@ class Service {
         })
     }
     
-    func showAlert(vc: UIViewController,title: String, message: String, cancelButton: Bool, completion: @escaping () -> Void) {
+    func showAlert(vc: UIViewController,title: String, message: String,textTitleOk: String, cancelButton: Bool, style: UIAlertAction.Style, completion: @escaping () -> Void) {
 
         let dialogMessage = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
-        let ok = UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
+        let ok = UIAlertAction(title: textTitleOk, style: style, handler: { (action) -> Void in
             completion()
         })
         if cancelButton == true {
@@ -164,7 +164,7 @@ class Service {
                 
                 if keychain.get("checkIfTrial") == "0attempts" {
                     print("## end trial")
-                    showAlert(vc: vc, title: "Trial Version", message: "Trial version has ended please buy the full version", cancelButton: false) {
+                    showAlert(vc: vc, title: "Trial Version", message: "Trial version has ended please buy the full version", textTitleOk: "OK", cancelButton: false, style: .default) {
                         print("## Trial version end Click Ok")
                     }
                     return

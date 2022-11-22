@@ -21,7 +21,6 @@ class CallHistoryViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-
         service.retrieveData()
         callHistoryTableView.reloadData()
         
