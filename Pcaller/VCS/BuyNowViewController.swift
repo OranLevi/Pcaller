@@ -15,7 +15,7 @@ class BuyNowViewController: UIViewController, SKPaymentTransactionObserver, SKPr
     @IBOutlet weak var imageApp: UIImageView!
     @IBOutlet weak var buyNowButton: UIButton!
     @IBOutlet weak var buyNowLabel: UILabel!
-    
+
     var service = Service.shared
     let productID = "com.Pcaller.buyUnlimitedCalls"
 
@@ -34,7 +34,7 @@ Buy now
             }
         }
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
@@ -66,11 +66,11 @@ Buy now
         request.delegate = self
         request.start()
     }
-    
+
     func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
         myProduct = response.products.first //Only one product
     }
-    
+
     func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         for transaction in transactions {
             if transaction.transactionState == .purchased {

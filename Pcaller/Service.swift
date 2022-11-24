@@ -23,6 +23,7 @@ enum NameAutoSwitchUserDefaults:String{
 class Service {
     
     static let shared: Service = Service()
+    static var enableInAppPurchase = false
     
     //* with %2A and # with %23
     var prefix = UserDefaults.standard.string(forKey: "Prefix") ?? "%2331%23"
@@ -156,16 +157,19 @@ class Service {
         
         if let url = URL(string: "tel://\(prefix)\(number)"), UIApplication.shared.canOpenURL(url) {
             print("## user dial : \(url)")
-            if keychain.get("userBuy") == nil {
-                
-                if keychain.get("checkIfTrial") == "0attempts" {
-                    print("## end trial")
-                    showAlert(vc: vc, title: "Trial Version", message: "Trial version has ended please buy the full version", textTitleOk: "OK", cancelButton: false, style: .default) {
-                        print("## Trial version end Click Ok")
+            if Service.enableInAppPurchase == true {
+                if keychain.get("userBuy") == nil {
+                    
+                    if keychain.get("checkIfTrial") == "0attempts" {
+                        print("## end trial")
+                        showAlert(vc: vc, title: "Trial Version", message: "Trial version has ended please buy the full version", textTitleOk: "OK", cancelButton: false, style: .default) {
+                            print("## Trial version end Click Ok")
+                        }
+                        return
                     }
-                    return
-                } 
+                }
             }
+          
             UIApplication.shared.open(url)
         }
         

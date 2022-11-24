@@ -48,14 +48,18 @@ class DialerViewController: UIViewController {
     }
     
     func setupLabel() {
-        Service.numberAttempts = 0
-        if (keychain.get("userBuy") != nil) == true {
+        if Service.enableInAppPurchase == true {
+            Service.numberAttempts = 0
+            if (keychain.get("userBuy") != nil) == true {
+                trialVersionLabel.isHidden = true
+                return
+            }
+            trialVersionLabel.text = """
+    Trial Version \(Service.numberAttempts ?? 0) Call left
+    """
+        } else {
             trialVersionLabel.isHidden = true
-            return
         }
-        trialVersionLabel.text = """
-Trial Version \(Service.numberAttempts ?? 0) Call left
-"""
     }
     
     func setupSwitches(){

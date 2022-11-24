@@ -31,12 +31,7 @@ class SettingTableViewController: UITableViewController {
         super.viewDidLoad()
         startupSetting()
     }
-    
-//    override func viewWillAppear(_ animated: Bool) {
-//        setupButton()
-//        setupSwitches()
-//    }
-    
+        
     override func viewDidLayoutSubviews() {
         setupButton()
         setupSwitches()
@@ -154,10 +149,28 @@ class SettingTableViewController: UITableViewController {
     }
     
     func setupButton() {
+    
+        if Service.enableInAppPurchase == true {
+            if #available(iOS 16.0, *) {
+                buyUnlimitedCallsButton.isHidden = false
+            } else {
+                buyUnlimitedCallsButton.isEnabled = false
+                buyUnlimitedCallsButton.tintColor = UIColor.clear
+            }
+        } else {
+            if #available(iOS 16.0, *) {
+                buyUnlimitedCallsButton.isHidden = true
+            } else {
+                buyUnlimitedCallsButton.isEnabled = false
+                buyUnlimitedCallsButton.tintColor = UIColor.clear
+            }
+        }
+        
         if (keychain.get("userBuy") != nil) == true {
             buyUnlimitedCallsButton.isEnabled = false
             buyUnlimitedCallsButton.title = "Purchased App"
         }
+        
         
         if service.selectedIndexSegment == SegmentIndex.firstName{
             segmentSwitch(switchOn: firstNameSwitch)
