@@ -514,7 +514,7 @@
                                         <rect key="frame" x="16" y="171" width="350" height="359"/>
                                         <string key="text">Enjoy making unlimited  anonymous calls
 No subscription fees
-And only at a price of 0.99$
+And only at a price of $
 without monthly subscription  fees, a one-time payment! 
 Buy now</string>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="24"/>
@@ -566,6 +566,7 @@ Buy now</string>
                     <navigationItem key="navigationItem" id="XPe-6F-tGX"/>
                     <connections>
                         <outlet property="buyNowButton" destination="Fom-eK-Qgg" id="QAv-1B-64v"/>
+                        <outlet property="buyNowLabel" destination="Tki-RO-MOE" id="FTH-24-Wow"/>
                         <outlet property="buyStackView" destination="CQZ-GI-Mzu" id="EHL-Fd-ta2"/>
                         <outlet property="imageApp" destination="aeG-f4-6FD" id="EFh-HA-GHz"/>
                     </connections>

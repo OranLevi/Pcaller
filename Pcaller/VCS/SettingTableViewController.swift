@@ -32,13 +32,14 @@ class SettingTableViewController: UITableViewController {
         startupSetting()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        setupSwitches()
-        setupButton()
-    }
+//    override func viewWillAppear(_ animated: Bool) {
+//        setupButton()
+//        setupSwitches()
+//    }
     
     override func viewDidLayoutSubviews() {
         setupButton()
+        setupSwitches()
     }
     
     @IBAction func firstNameSwitchAction(_ sender: Any) {

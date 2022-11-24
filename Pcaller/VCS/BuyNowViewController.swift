@@ -9,18 +9,36 @@ import UIKit
 import StoreKit
 import KeychainSwift
 
-class BuyNowViewController: UIViewController, SKPaymentTransactionObserver{
+class BuyNowViewController: UIViewController, SKPaymentTransactionObserver, SKProductsRequestDelegate{
 
     @IBOutlet weak var buyStackView: UIStackView!
     @IBOutlet weak var imageApp: UIImageView!
     @IBOutlet weak var buyNowButton: UIButton!
-
+    @IBOutlet weak var buyNowLabel: UILabel!
+    
     var service = Service.shared
     let productID = "com.Pcaller.buyUnlimitedCalls"
 
+    var myProduct: SKProduct? {
+        didSet {
+            if let receivedProduct = myProduct {
+                DispatchQueue.main.async { [weak self] in
+                    self?.buyNowLabel.text = """
+Enjoy making unlimited  anonymous calls
+No subscription fees
+And only at a price of \(receivedProduct.localizedPrice)
+without monthly subscription  fees, a one-time payment! 
+Buy now
+"""
+                }
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        fetchProducts()
         SKPaymentQueue.default().add(self)
     }
 
@@ -43,6 +61,16 @@ class BuyNowViewController: UIViewController, SKPaymentTransactionObserver{
         buyStackView.layer.cornerRadius = 20
     }
 
+    func fetchProducts() {
+        let request = SKProductsRequest(productIdentifiers: [productID])
+        request.delegate = self
+        request.start()
+    }
+    
+    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
+        myProduct = response.products.first //Only one product
+    }
+    
     func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         for transaction in transactions {
             if transaction.transactionState == .purchased {
@@ -58,5 +86,13 @@ class BuyNowViewController: UIViewController, SKPaymentTransactionObserver{
                 print("## Transaction Failed")
             }
         }
+    }
+}
+extension SKProduct {
+    var localizedPrice: String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.locale = priceLocale
+        return formatter.string(from: price)!
     }
 }
