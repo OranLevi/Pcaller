@@ -30,13 +30,10 @@ class SettingTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         startupSetting()
-    }
-        
-    override func viewDidLayoutSubviews() {
         setupButton()
         setupSwitches()
     }
-    
+            
     @IBAction func firstNameSwitchAction(_ sender: Any) {
         segmentSwitch(switchOn: firstNameSwitch)
         UserDefaults.standard.set(SegmentIndex.firstName.rawValue, forKey: "sortContacts")
@@ -94,6 +91,7 @@ class SettingTableViewController: UITableViewController {
                 UserDefaults.standard.removePersistentDomain(forName: appDomain)
             }
             self.startupSetting()
+            self.setupButton()
             self.autoSaveToHistorySwitch.isOn = true
             self.autoHideMyNumberSwitch.isOn = true
             self.prefixText.text = "#31#"
@@ -106,6 +104,7 @@ class SettingTableViewController: UITableViewController {
                 UserDefaults.standard.removePersistentDomain(forName: appDomain)
             }
             self.startupSetting()
+            self.setupButton()
             self.service.deleteAllData(entity: "HistoryData")
             self.autoSaveToHistorySwitch.isOn = true
             self.autoHideMyNumberSwitch.isOn = true
@@ -144,7 +143,7 @@ class SettingTableViewController: UITableViewController {
     }
     
     func startupSetting() {
-        setupButton()
+//        setupButton()
         prefixText.text = service.textReplaced(text: service.prefix, fromHashtag: false)
     }
     

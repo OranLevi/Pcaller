@@ -44,7 +44,6 @@ class DialerViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         setupLabel()
-        print("## Update Calls left Label")
     }
     
     func setupLabel() {

@@ -11,8 +11,6 @@ The application developed with storekit to embed In-App Purchase, to offer the u
 The user can calling until 3 times free calls after which the access to call from the application will be blocked.<br>
 If the user has not purchased unlimited package - even after deleting the application, the number of remaining call trials will be saved.
 <br>
-You can turn on the option Enable in app purchase by change the var enableInAppPurchase to true in the service class.
-<br>
 <b>Please do not run this application in simulator some features will not work for you.</b>
 
 ## Screenshots App Store Version
