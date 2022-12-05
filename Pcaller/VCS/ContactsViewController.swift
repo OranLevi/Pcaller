@@ -133,7 +133,7 @@ extension ContactsViewController: UITableViewDelegate {
         let callAction = UIContextualAction(style: .normal, title: "Call Private", handler: { (action, view, success) in
             let telephone = item.telephone.removeCharacters(from: CharacterSet.decimalDigits.inverted)
             self.service.dialNumber(number: telephone, prefixNumber: true, vc: self)
-            self.service.setupCallerId(firstName: item.firstName, lastName: item.lastName, telephone: item.telephone)
+            self.service.setupCallerId(firstName: item.firstName, lastName: item.lastName, telephone: item.telephone, callHidden: true)
             success(true)
         })
         

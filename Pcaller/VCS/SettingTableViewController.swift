@@ -17,7 +17,6 @@ class SettingTableViewController: UITableViewController {
     var tapSavePrefix = false
     let keychain = KeychainSwift()
 
-  
     @IBOutlet weak var autoHideMyNumberSwitch: UISwitch!
     @IBOutlet weak var autoSaveToHistorySwitch: UISwitch!
     @IBOutlet weak var prefixText: UITextField!
@@ -143,8 +142,8 @@ class SettingTableViewController: UITableViewController {
     }
     
     func startupSetting() {
-//        setupButton()
-        prefixText.text = service.textReplaced(text: service.prefix, fromHashtag: false)
+        setupButton()
+        prefixText.text = service.textReplaced(text: UserDefaults.standard.string(forKey: "Prefix") ?? "%2331%23", fromHashtag: false)
     }
     
     func setupButton() {

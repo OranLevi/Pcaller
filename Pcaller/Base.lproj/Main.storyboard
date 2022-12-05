@@ -446,26 +446,37 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wlg-Sh-sfb">
-                                                    <rect key="frame" x="360" y="9" width="38" height="60"/>
+                                                    <rect key="frame" x="366" y="10" width="38" height="20.5"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="60" id="XG9-74-Qsk"/>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" id="jAA-08-zYr"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="isHideen" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8et-96-FkX">
+                                                    <rect key="frame" x="332.5" y="40.5" width="71.5" height="20.5"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" id="oeG-Tq-uCZ"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="8et-96-FkX" firstAttribute="top" secondItem="Wlg-Sh-sfb" secondAttribute="bottom" constant="10" id="21b-4w-Hxz"/>
                                                 <constraint firstItem="Iyq-JA-T9P" firstAttribute="leading" secondItem="ywR-YS-558" secondAttribute="leading" constant="26" id="25k-FT-w9R"/>
-                                                <constraint firstItem="Wlg-Sh-sfb" firstAttribute="centerY" secondItem="ywR-YS-558" secondAttribute="centerY" id="C4O-Mq-cuA"/>
+                                                <constraint firstItem="Wlg-Sh-sfb" firstAttribute="top" secondItem="ywR-YS-558" secondAttribute="top" constant="10" id="7bX-wO-x7s"/>
                                                 <constraint firstItem="4NM-Uj-Wmk" firstAttribute="leading" secondItem="ywR-YS-558" secondAttribute="leading" constant="26" id="ElC-bh-cFV"/>
                                                 <constraint firstItem="Iyq-JA-T9P" firstAttribute="top" secondItem="ywR-YS-558" secondAttribute="topMargin" id="Ofy-bA-ez7"/>
+                                                <constraint firstAttribute="trailing" secondItem="Wlg-Sh-sfb" secondAttribute="trailing" constant="10" id="nyz-9g-LaR"/>
                                                 <constraint firstItem="4NM-Uj-Wmk" firstAttribute="top" secondItem="Iyq-JA-T9P" secondAttribute="bottom" constant="8" symbolic="YES" id="pY2-ye-RBV"/>
-                                                <constraint firstAttribute="trailing" secondItem="Wlg-Sh-sfb" secondAttribute="trailing" constant="16" id="uFO-0j-19V"/>
+                                                <constraint firstAttribute="trailing" secondItem="8et-96-FkX" secondAttribute="trailing" constant="10" id="tWN-vf-wdQ"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="callHiddenLabel" destination="8et-96-FkX" id="evJ-KS-9mn"/>
                                             <outlet property="firstAndLastNameLabel" destination="Iyq-JA-T9P" id="nxx-K4-a5t"/>
                                             <outlet property="telePhone" destination="4NM-Uj-Wmk" id="oPS-dW-y2S"/>
                                             <outlet property="timeDateLabel" destination="Wlg-Sh-sfb" id="w1S-vp-UBS"/>
@@ -473,6 +484,12 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Empty" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pf9-d1-lSv">
+                                <rect key="frame" x="182.5" y="437.5" width="49" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="QRg-PW-Vr6"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -481,16 +498,19 @@
                             <constraint firstItem="70J-ya-aFy" firstAttribute="leading" secondItem="QRg-PW-Vr6" secondAttribute="leading" id="3dT-YT-THC"/>
                             <constraint firstItem="70J-ya-aFy" firstAttribute="top" secondItem="QRg-PW-Vr6" secondAttribute="top" id="9xG-o4-YrP"/>
                             <constraint firstItem="QRg-PW-Vr6" firstAttribute="bottom" secondItem="70J-ya-aFy" secondAttribute="bottom" id="Blr-w4-zTn"/>
+                            <constraint firstItem="pf9-d1-lSv" firstAttribute="centerX" secondItem="OXD-b2-rdG" secondAttribute="centerX" id="Lh3-R6-HMv"/>
+                            <constraint firstItem="pf9-d1-lSv" firstAttribute="centerY" secondItem="OXD-b2-rdG" secondAttribute="centerY" id="q3l-rR-crc"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Calls History" image="text.book.closed" catalog="system" id="xLZ-ze-5HC"/>
                     <connections>
                         <outlet property="callHistoryTableView" destination="70J-ya-aFy" id="yCz-gm-Ci3"/>
+                        <outlet property="emptyLabel" destination="pf9-d1-lSv" id="zXO-ek-6vX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="14W-ST-hhb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2087.6923076923076" y="-366.11374407582935"/>
+            <point key="canvasLocation" x="2086.9565217391305" y="-366.29464285714283"/>
         </scene>
         <!--Buy Now View Controller-->
         <scene sceneID="Q1n-wC-xdC">

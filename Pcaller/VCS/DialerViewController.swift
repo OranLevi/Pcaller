@@ -182,11 +182,11 @@ class DialerViewController: UIViewController {
         }
         if self.hideMyNumberSwitch.isOn {
             self.service.dialNumber(number: self.numberDisplay, prefixNumber: true, vc: self)
-            self.service.setupCallerId(firstName: "", lastName: "", telephone: self.numberDisplayLabel.text ?? "??")
+            self.service.setupCallerId(firstName: "", lastName: "", telephone: self.numberDisplayLabel.text ?? "??", callHidden: true)
         }
         else {
             self.service.dialNumber(number: self.numberDisplay, prefixNumber: false, vc: self)
-            self.service.setupCallerId(firstName: "", lastName: "", telephone: self.numberDisplayLabel.text ?? "??")
+            self.service.setupCallerId(firstName: "", lastName: "", telephone: self.numberDisplayLabel.text ?? "??", callHidden: false)
         }
     }
 }

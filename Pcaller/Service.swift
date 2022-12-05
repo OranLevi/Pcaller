@@ -52,6 +52,8 @@ class Service {
     static var firstNameHistory = ""
     static var lastNameHistory = ""
     static var telephoneHistory = ""
+    static var callHiddenHistory:NSNumber?
+
     
 //MARK: - Alert
     
@@ -93,13 +95,13 @@ class Service {
         alert.addAction(UIAlertAction(title: "Call normally", style: .default, handler: { (_) in
             let telephone = telephone.removeCharacters(from: CharacterSet.decimalDigits.inverted)
             self.dialNumber(number: telephone, prefixNumber: false, vc: vc)
-            self.setupCallerId(firstName: firstName, lastName: lastName, telephone: telephone)
+            self.setupCallerId(firstName: firstName, lastName: lastName, telephone: telephone, callHidden: false)
         }))
         
         alert.addAction(UIAlertAction(title: "Call Private number", style: .destructive, handler: { (_) in
             let telephone = telephone.removeCharacters(from: CharacterSet.decimalDigits.inverted)
             self.dialNumber(number: telephone, prefixNumber: true, vc: vc)
-            self.setupCallerId(firstName: firstName, lastName: lastName, telephone: telephone)
+            self.setupCallerId(firstName: firstName, lastName: lastName, telephone: telephone, callHidden: true)
         }))
         
         alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: { (_) in
@@ -177,7 +179,7 @@ class Service {
     
 //MARK: - CoreData
     
-    func saveHistoryData(firstName: String, lastName: String, telephone: String){
+    func saveHistoryData(firstName: String, lastName: String, telephone: String, callHidden: NSNumber?){
         print(Service.saveToHistory)
         if Service.saveToHistory == false {
             return
@@ -198,6 +200,7 @@ class Service {
         newHistory.lastName = lastName
         newHistory.telephone = telephone
         newHistory.time = dateString
+        newHistory.callHidden = callHidden
         
         do {
             try context.save()
@@ -249,11 +252,11 @@ class Service {
         }
     }
     
-    func setupCallerId(firstName: String, lastName: String, telephone: String){
+    func setupCallerId(firstName: String, lastName: String, telephone: String, callHidden: NSNumber?){
         Service.firstNameHistory = firstName
         Service.lastNameHistory = lastName
         Service.telephoneHistory = telephone
-        
+        Service.callHiddenHistory = callHidden
     }
 
     

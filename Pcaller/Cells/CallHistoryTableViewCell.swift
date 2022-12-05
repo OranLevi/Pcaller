@@ -12,7 +12,8 @@ class CallHistoryTableViewCell: UITableViewCell {
     @IBOutlet weak var firstAndLastNameLabel: UILabel!
     @IBOutlet weak var telePhone: UILabel!
     @IBOutlet weak var timeDateLabel: UILabel!
-
+    @IBOutlet weak var callHiddenLabel: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

@@ -15,4 +15,5 @@ class HistoryData: NSManagedObject {
     @NSManaged var lastName: String
     @NSManaged var telephone: String
     @NSManaged var time: String
+    @NSManaged var callHidden: NSNumber?
 }

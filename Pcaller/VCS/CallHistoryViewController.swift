@@ -11,6 +11,7 @@ import CoreData
 class CallHistoryViewController: UIViewController {
     
     @IBOutlet weak var callHistoryTableView: UITableView!
+    @IBOutlet weak var emptyLabel: UILabel!
     
     var service = Service.shared
     
@@ -23,7 +24,15 @@ class CallHistoryViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         service.retrieveData()
         callHistoryTableView.reloadData()
-        
+        checkIfHistoryEmpty()
+    }
+    
+    func checkIfHistoryEmpty(){
+        if service.historyList.count == 0 {
+            emptyLabel.isHidden = false
+        } else {
+            emptyLabel.isHidden = true
+        }
     }
 }
 
@@ -38,10 +47,22 @@ extension CallHistoryViewController: UITableViewDataSource{
         
         let thisHistory: HistoryData
         thisHistory = service.historyList[indexPath.row]
-        
+        print(service.historyList)
         cell.firstAndLastNameLabel.text = "\(thisHistory.firstName) \(thisHistory.lastName)"
         cell.telePhone.text = thisHistory.telephone
         cell.timeDateLabel.text = thisHistory.time
+        
+        if thisHistory.callHidden == true {
+            cell.callHiddenLabel.text = "Hidden"
+            cell.callHiddenLabel.textColor = .systemRed
+        } else if thisHistory.callHidden == false {
+            cell.callHiddenLabel.text = "Normally"
+            cell.callHiddenLabel.textColor = .black
+        }else if thisHistory.callHidden == nil{
+            cell.callHiddenLabel.text = ""
+            cell.callHiddenLabel.textColor = .black
+        }
+        
         return cell
     }
 }
@@ -54,7 +75,7 @@ extension CallHistoryViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let delete = UIContextualAction(style: .destructive, title: "Delete") {  (contextualAction, view, success) in
-            
+      
             _ = tableView.cellForRow(at: indexPath)! as UITableViewCell
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             let context: NSManagedObjectContext = appDelegate.persistentContainer.viewContext
@@ -67,12 +88,13 @@ extension CallHistoryViewController: UITableViewDelegate {
             } catch {
                 print ("## error")
             }
+            self.checkIfHistoryEmpty()
         }
         let call = UIContextualAction(style: .normal, title: "Call Private") {  (contextualAction, view, success) in
             let item = self.service.historyList[indexPath.row]
             let telephone = item.telephone.removeCharacters(from: CharacterSet.decimalDigits.inverted)
             self.service.dialNumber(number: telephone, prefixNumber: true, vc: self)
-            self.service.setupCallerId(firstName: item.firstName, lastName: item.lastName, telephone: item.telephone)
+            self.service.setupCallerId(firstName: item.firstName, lastName: item.lastName, telephone: item.telephone, callHidden: true)
             success(true)
         }
         
