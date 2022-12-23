@@ -8,6 +8,8 @@
 import UIKit
 import CoreData
 import KeychainSwift
+import StoreKit
+import SafariServices
 
 enum SegmentIndex: Int {
     case firstName = 0
@@ -24,6 +26,10 @@ class Service {
     
     static let shared: Service = Service()
     static var enableInAppPurchase = false
+    
+    // Appstore rating
+    var timerToShowAppStoreRating : Timer?
+    var userDefaultsAppRatingShowing =  UserDefaults.standard.bool(forKey: "AppRatingShowing")
     
     //* with %2A and # with %23
     var prefix = UserDefaults.standard.string(forKey: "Prefix") ?? "%2331%23"
@@ -44,7 +50,7 @@ class Service {
     var historyList = [HistoryData](){
         didSet {
             historyList = historyList.sorted(by: {  $0.time > $1.time })
-           }
+        }
     }
     
     let keychain = KeychainSwift()
@@ -53,9 +59,9 @@ class Service {
     static var lastNameHistory = ""
     static var telephoneHistory = ""
     static var callHiddenHistory:NSNumber?
-
     
-//MARK: - Alert
+    
+    //MARK: - Alert
     
     func messageAccess(vc: UIViewController){
         DispatchQueue.main.async {
@@ -113,9 +119,9 @@ class Service {
     }
     
     func showAlert(vc: UIViewController,title: String, message: String,textTitleOk: String, cancelButton: Bool, style: UIAlertAction.Style, completion: @escaping () -> Void) {
-
+        
         let dialogMessage = UIAlertController(title: title, message: message, preferredStyle: .alert)
-
+        
         let ok = UIAlertAction(title: textTitleOk, style: style, handler: { (action) -> Void in
             completion()
         })
@@ -126,9 +132,9 @@ class Service {
             dialogMessage.addAction(cancel)
         }
         
-
+        
         dialogMessage.addAction(ok)
-       
+        
         vc.present(dialogMessage, animated: true, completion: nil)
     }
     
@@ -136,7 +142,7 @@ class Service {
         if  keychain.get("checkIfTrial") == nil{
             keychain.set("3attempts", forKey: "checkIfTrial")
         }
-
+        
         switch keychain.get("checkIfTrial") {
         case "3attempts": keychain.set("2attempts", forKey: "checkIfTrial")
         case "2attempts": keychain.set("1attempts", forKey: "checkIfTrial")
@@ -145,9 +151,9 @@ class Service {
             break
         }
     }
-
     
-//MARK: - Dialer func
+    
+    //MARK: - Dialer func
     
     func dialNumber(number : String, prefixNumber: Bool, vc: UIViewController) {
         
@@ -171,13 +177,13 @@ class Service {
                     }
                 }
             }
-          
+            
             UIApplication.shared.open(url)
         }
         
     }
     
-//MARK: - CoreData
+    //MARK: - CoreData
     
     func saveHistoryData(firstName: String, lastName: String, telephone: String, callHidden: NSNumber?){
         print(Service.saveToHistory)
@@ -189,7 +195,7 @@ class Service {
         let context: NSManagedObjectContext = appDelegate.persistentContainer.viewContext
         let entity = NSEntityDescription.entity(forEntityName: "HistoryData", in: context)
         let newHistory = HistoryData(entity: entity!, insertInto: context)
-     
+        
         let date = Date()
         let df = DateFormatter()
         df.dateFormat = "yyyy-MM-dd HH:mm:ss"
@@ -213,22 +219,22 @@ class Service {
     
     func retrieveData() {
         historyList = []
-            let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            let context: NSManagedObjectContext = appDelegate.persistentContainer.viewContext
-            let request = NSFetchRequest<NSFetchRequestResult>(entityName: "HistoryData")
-            do {
-                let results: NSArray = try context.fetch(request) as NSArray
-                for result in results {
-                    let history = result as! HistoryData
-                    historyList.append(history)
-                }
-            } catch {
-                print("## Fetch Failed")
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context: NSManagedObjectContext = appDelegate.persistentContainer.viewContext
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "HistoryData")
+        do {
+            let results: NSArray = try context.fetch(request) as NSArray
+            for result in results {
+                let history = result as! HistoryData
+                historyList.append(history)
             }
+        } catch {
+            print("## Fetch Failed")
         }
+    }
     
     func deleteAllData(entity: String){
-
+        
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let managedContext = appDelegate.persistentContainer.viewContext
         let DelAllReqVar = NSBatchDeleteRequest(fetchRequest: NSFetchRequest<NSFetchRequestResult>(entityName: entity))
@@ -239,7 +245,7 @@ class Service {
             print(error)
         }
     }
-
+    
     func textReplaced(text: String, fromHashtag: Bool) -> String{
         if fromHashtag == false {
             let replaced = text.replacingOccurrences(of: "%2A", with: "*")
@@ -258,18 +264,70 @@ class Service {
         Service.telephoneHistory = telephone
         Service.callHiddenHistory = callHidden
     }
-
     
-
+    //MARK: - AppStore Rating
+    
+    func startTimerAppStoreRating() {
+        guard userDefaultsAppRatingShowing == false else { return }
+        guard historyList.count >= 4 else { return }
+        guard timerToShowAppStoreRating == nil else { return }
+        
+        timerToShowAppStoreRating =  Timer.scheduledTimer(
+            timeInterval: TimeInterval(2),
+            target      : self,
+            selector    : #selector(appStoreRating),
+            userInfo    : nil,
+            repeats     : false)
+    }
+    
+    @objc func appStoreRating() {
+        print("## Start AppStore Rating")
+        
+        var rootViewController = UIApplication.shared.windows.first?.rootViewController
+        
+        if let navigationController = rootViewController as? UINavigationController {
+            rootViewController = navigationController.viewControllers.first
+        }
+        if let tabBarController = rootViewController as? UITabBarController {
+            rootViewController = tabBarController.selectedViewController
+        }
+        
+        let alert = UIAlertController(title: "Feedback", message: "Are you enjoying the app?", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Yes, i love it!", style: .default, handler: { (_) in
+            print("## Yes, i love it!")
+            if #available(iOS 14.0, *) {
+                if let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
+                    SKStoreReviewController.requestReview(in: scene)
+                }
+            }
+        }))
+        
+        alert.addAction(UIAlertAction(title: "No, I did not like!", style: .default, handler: { (_) in
+            print("## No, I did not like!")
+            if let urlForm = URL(string: "https://forms.gle/HstTbo7Di7PKE2HP8") {
+                let formReview = SFSafariViewController(url: urlForm)
+                rootViewController?.present(formReview, animated: true, completion: nil)
+            }
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Dismiss", style: .destructive, handler: { (_) in
+            print("## Dismiss")
+        }))
+        rootViewController?.present(alert, animated: true, completion: nil)
+        
+        UserDefaults.standard.set(true, forKey: "AppRatingShowing")
+        self.userDefaultsAppRatingShowing = true
+    }
 }
 
 extension String {
-
+    
     func removeCharacters(from forbiddenChars: CharacterSet) -> String {
         let passed = self.unicodeScalars.filter { !forbiddenChars.contains($0) }
         return String(String.UnicodeScalarView(passed))
     }
-
+    
     func removeCharacters(from: String) -> String {
         return removeCharacters(from: CharacterSet(charactersIn: from))
     }

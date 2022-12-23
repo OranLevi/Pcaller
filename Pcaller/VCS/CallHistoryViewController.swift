@@ -14,7 +14,7 @@ class CallHistoryViewController: UIViewController {
     @IBOutlet weak var emptyLabel: UILabel!
     
     var service = Service.shared
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         callHistoryTableView.dataSource = self
@@ -25,6 +25,12 @@ class CallHistoryViewController: UIViewController {
         service.retrieveData()
         callHistoryTableView.reloadData()
         checkIfHistoryEmpty()
+        service.startTimerAppStoreRating()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        service.timerToShowAppStoreRating?.invalidate()
+        service.timerToShowAppStoreRating = nil
     }
     
     func checkIfHistoryEmpty(){
@@ -47,7 +53,6 @@ extension CallHistoryViewController: UITableViewDataSource{
         
         let thisHistory: HistoryData
         thisHistory = service.historyList[indexPath.row]
-        print(service.historyList)
         cell.firstAndLastNameLabel.text = "\(thisHistory.firstName) \(thisHistory.lastName)"
         cell.telePhone.text = thisHistory.telephone
         cell.timeDateLabel.text = thisHistory.time
@@ -62,7 +67,7 @@ extension CallHistoryViewController: UITableViewDataSource{
             cell.callHiddenLabel.text = ""
             cell.callHiddenLabel.textColor = .black
         }
-        
+
         return cell
     }
 }

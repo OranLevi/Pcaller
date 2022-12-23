@@ -158,8 +158,9 @@ extension ContactsViewController: UISearchBarDelegate {
         } else {
             isSearching = true
             filteredData = contacts.filter {name in
-                return   name.firstName.lowercased().contains(searchText.lowercased()) || name.lastName.lowercased().contains(searchText.lowercased()) ||  name.telephone.lowercased().contains(searchText.lowercased())
+                return   name.firstName.lowercased().contains(searchText.lowercased()) || name.lastName.lowercased().contains(searchText.lowercased()) ||  name.telephone.removeCharacters(from: CharacterSet.decimalDigits.inverted).lowercased().contains(searchText.lowercased())
             }
+
             contactsTableView.reloadData()
         }
     }
