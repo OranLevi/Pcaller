@@ -18,6 +18,7 @@
 		173D9BC228FDC13800D8BE25 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173D9BC128FDC13800D8BE25 /* Service.swift */; };
 		177662A22902F51B001FDEF7 /* SettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177662A12902F51B001FDEF7 /* SettingTableViewController.swift */; };
 		17863A1D292ACEF20023077F /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 17863A1C292ACEF20023077F /* KeychainSwift */; };
+		178750DB295B0E28008708C7 /* ContactUsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178750DA295B0E28008708C7 /* ContactUsViewController.swift */; };
 		17C541332903F71C0032F15B /* CallHistoryData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 17C541312903F71C0032F15B /* CallHistoryData.xcdatamodeld */; };
 		17C541352903F86D0032F15B /* CallHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C541342903F86D0032F15B /* CallHistoryViewController.swift */; };
 		17C541372903FC100032F15B /* CallHistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C541362903FC100032F15B /* CallHistoryTableViewCell.swift */; };
@@ -39,6 +40,7 @@
 		172CEA5228FC1FAA006D297B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		173D9BC128FDC13800D8BE25 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		177662A12902F51B001FDEF7 /* SettingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewController.swift; sourceTree = "<group>"; };
+		178750DA295B0E28008708C7 /* ContactUsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactUsViewController.swift; sourceTree = "<group>"; };
 		17C541322903F71C0032F15B /* CallHistoryData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CallHistoryData.xcdatamodel; sourceTree = "<group>"; };
 		17C541342903F86D0032F15B /* CallHistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallHistoryViewController.swift; sourceTree = "<group>"; };
 		17C541362903FC100032F15B /* CallHistoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallHistoryTableViewCell.swift; sourceTree = "<group>"; };
@@ -76,6 +78,7 @@
 				17C541342903F86D0032F15B /* CallHistoryViewController.swift */,
 				177662A12902F51B001FDEF7 /* SettingTableViewController.swift */,
 				171107AE292A7B630033E719 /* BuyNowViewController.swift */,
+				178750DA295B0E28008708C7 /* ContactUsViewController.swift */,
 			);
 			path = VCS;
 			sourceTree = "<group>";
@@ -216,6 +219,7 @@
 				17C7BCC028FC906500C22CAA /* ContactsTableViewCell.swift in Sources */,
 				172CEA4528FC1FAA006D297B /* AppDelegate.swift in Sources */,
 				171107AF292A7B630033E719 /* BuyNowViewController.swift in Sources */,
+				178750DB295B0E28008708C7 /* ContactUsViewController.swift in Sources */,
 				17C541332903F71C0032F15B /* CallHistoryData.xcdatamodeld in Sources */,
 				172CEA4728FC1FAA006D297B /* SceneDelegate.swift in Sources */,
 				177662A22902F51B001FDEF7 /* SettingTableViewController.swift in Sources */,
@@ -381,7 +385,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3;
+				MARKETING_VERSION = 1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Oran.Pcaller;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -414,7 +418,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3;
+				MARKETING_VERSION = 1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Oran.Pcaller;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

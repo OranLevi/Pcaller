@@ -12,6 +12,14 @@ struct FetchedContact {
     var firstName: String
     var lastName: String
     var telephone: String
+    
+    var firstAndLastNameContact: String {
+        return "\(firstName) \(lastName)"
+    }
+    
+    var lasstAndFirstNameContact: String {
+        return "\(lastName) \(firstName)"
+    }
 }
 
 class ContactsViewController: UIViewController {
@@ -62,7 +70,7 @@ class ContactsViewController: UIViewController {
             filteredData = contacts.sorted { $0.lastName.lowercased() < $1.lastName.lowercased() }
         case 2:
             filteredData = contacts.sorted { $0.telephone.lowercased() < $1.telephone.lowercased() }
-
+            
         default:
             print("##")
         }
@@ -72,7 +80,7 @@ class ContactsViewController: UIViewController {
         }
         contactsTableView.reloadData()
     }
-        
+    
     private func fetchContacts() {
         
         let store = CNContactStore()
@@ -157,10 +165,14 @@ extension ContactsViewController: UISearchBarDelegate {
             contactsTableView.reloadData()
         } else {
             isSearching = true
-            filteredData = contacts.filter {name in
-                return   name.firstName.lowercased().contains(searchText.lowercased()) || name.lastName.lowercased().contains(searchText.lowercased()) ||  name.telephone.removeCharacters(from: CharacterSet.decimalDigits.inverted).lowercased().contains(searchText.lowercased())
+            filteredData = contacts.filter {
+                $0.firstAndLastNameContact.containsCharactersInSequence(
+                    searchText.trimmingCharacters(in: .whitespaces), options: [.caseInsensitive, .diacriticInsensitive,]).result ||
+                $0.lasstAndFirstNameContact.containsCharactersInSequence(
+                    searchText.trimmingCharacters(in: .whitespaces), options: [.caseInsensitive, .diacriticInsensitive,]).result ||
+                $0.telephone.removeCharacters(from: CharacterSet.decimalDigits.inverted).containsCharactersInSequence(
+                    searchText, options: [.caseInsensitive, .diacriticInsensitive,]).result
             }
-
             contactsTableView.reloadData()
         }
     }
@@ -176,6 +188,11 @@ extension ContactsViewController: UISearchBarDelegate {
         isSearching = false
         isSegmentedControl = false
         contactsTableView.reloadData()
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = false
+        searchBar.resignFirstResponder()
     }
 }
 

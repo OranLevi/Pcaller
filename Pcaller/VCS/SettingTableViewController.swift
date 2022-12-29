@@ -25,12 +25,14 @@ class SettingTableViewController: UITableViewController {
     @IBOutlet weak var telephoneNameSwitch: UISwitch!
     @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var buyUnlimitedCallsButton: UIBarButtonItem!
+    @IBOutlet weak var appVersionLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         startupSetting()
         setupButton()
         setupSwitches()
+        setupView()
     }
             
     @IBAction func firstNameSwitchAction(_ sender: Any) {
@@ -178,7 +180,10 @@ class SettingTableViewController: UITableViewController {
             segmentSwitch(switchOn: telephoneNameSwitch)
         }
     }
-    
+    func setupView() {
+        let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+        appVersionLabel.text = "App Version: \(appVersion ?? "N/A")"
+    }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }

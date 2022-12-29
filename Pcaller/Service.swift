@@ -9,7 +9,6 @@ import UIKit
 import CoreData
 import KeychainSwift
 import StoreKit
-import SafariServices
 
 enum SegmentIndex: Int {
     case firstName = 0
@@ -296,6 +295,7 @@ class Service {
         
         alert.addAction(UIAlertAction(title: "Yes, i love it!", style: .default, handler: { (_) in
             print("## Yes, i love it!")
+            
             if #available(iOS 14.0, *) {
                 if let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
                     SKStoreReviewController.requestReview(in: scene)
@@ -305,10 +305,12 @@ class Service {
         
         alert.addAction(UIAlertAction(title: "No, I did not like!", style: .default, handler: { (_) in
             print("## No, I did not like!")
-            if let urlForm = URL(string: "https://forms.gle/HstTbo7Di7PKE2HP8") {
-                let formReview = SFSafariViewController(url: urlForm)
-                rootViewController?.present(formReview, animated: true, completion: nil)
-            }
+            
+            ContactUsViewController.urlWeb = URL(string: WebViewUrls.ratingApp.rawValue)!
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let secondViewController = storyboard.instantiateViewController(withIdentifier: "ContactUsNav") as! UINavigationController
+                rootViewController?.present(secondViewController, animated: true, completion: nil)
+
         }))
         
         alert.addAction(UIAlertAction(title: "Dismiss", style: .destructive, handler: { (_) in
@@ -333,4 +335,26 @@ extension String {
     }
 }
 
-
+extension StringProtocol {
+    func containsCharactersInSequence<S: StringProtocol>(
+        _ string: S,
+        options: String.CompareOptions = []
+    ) -> (result: Bool, ranges: [Range<Index>]) {
+        var found = 0
+        var startIndex = self.startIndex
+        var index = string.startIndex
+        var ranges: [Range<Index>] = []
+        while index < string.endIndex,
+            let range = self[startIndex...]
+                .range(
+                    of: string[index...index],
+                    options: options
+                ) {
+            ranges.append(range)
+            startIndex = range.upperBound
+            string.formIndex(after: &index)
+            found += 1
+        }
+        return (found == string.count, ranges)
+    }
+}
