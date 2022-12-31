@@ -35,11 +35,16 @@ class DialerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCornerRadiusButton()
+        service.firstTimeLoad()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         setupLabel()
         setupSwitches()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+            Service.dialerSaveToHistory = nil
     }
     
     override func viewDidLayoutSubviews() {
@@ -63,18 +68,16 @@ class DialerViewController: UIViewController {
     
     func setupSwitches(){
         
-        if UserDefaults.standard.string(forKey: NameAutoSwitchUserDefaults.hideMyNumber.rawValue) == "isOn" || UserDefaults.standard.string(forKey: NameAutoSwitchUserDefaults.hideMyNumber.rawValue) == nil {
+        if UserDefaults.standard.string(forKey: SwitchesUserDefaults.hideMyNumber.rawValue) == "isOn" || UserDefaults.standard.string(forKey: SwitchesUserDefaults.hideMyNumber.rawValue) == nil {
             hideMyNumberSwitch.isOn = true
         } else {
             hideMyNumberSwitch.isOn = false
         }
         
-        if UserDefaults.standard.string(forKey: NameAutoSwitchUserDefaults.saveToHistory.rawValue) == "isOn" || UserDefaults.standard.string(forKey: NameAutoSwitchUserDefaults.saveToHistory.rawValue) == nil {
+        if UserDefaults.standard.string(forKey: SwitchesUserDefaults.saveToHistory.rawValue) == "isOn" || UserDefaults.standard.string(forKey: SwitchesUserDefaults.saveToHistory.rawValue) == nil {
             saveToHistorySwitch.isOn = true
-            Service.saveToHistory = true
         } else {
             saveToHistorySwitch.isOn = false
-            Service.saveToHistory = false
         }
     }
     
@@ -165,11 +168,9 @@ class DialerViewController: UIViewController {
     
     @IBAction func saveToHistorySwitch(_ sender: Any) {
         if saveToHistorySwitch.isOn {
-            Service.saveToHistory = true
-            print(Service.saveToHistory)
+            Service.dialerSaveToHistory = true
         } else {
-            Service.saveToHistory = false
-            print(Service.saveToHistory)
+            Service.dialerSaveToHistory = false
         }
     }
     

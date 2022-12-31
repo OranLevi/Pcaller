@@ -71,17 +71,17 @@ class SettingTableViewController: UITableViewController {
     
     @IBAction func SwitchAutoHideMyNumber(_ sender: Any) {
         if autoHideMyNumberSwitch.isOn {
-            UserDefaults.standard.set("isOn", forKey: NameAutoSwitchUserDefaults.hideMyNumber.rawValue)
+            UserDefaults.standard.set("isOn", forKey: SwitchesUserDefaults.hideMyNumber.rawValue)
         } else {
-            UserDefaults.standard.set("isOff", forKey: NameAutoSwitchUserDefaults.hideMyNumber.rawValue)
+            UserDefaults.standard.set("isOff", forKey: SwitchesUserDefaults.hideMyNumber.rawValue)
         }
     }
     
     @IBAction func SwitchAutoSaveToHistory(_ sender: Any) {
         if autoSaveToHistorySwitch.isOn {
-            UserDefaults.standard.set("isOn", forKey: NameAutoSwitchUserDefaults.saveToHistory.rawValue)
+            UserDefaults.standard.set("isOn", forKey: SwitchesUserDefaults.saveToHistory.rawValue)
         } else {
-            UserDefaults.standard.set("isOff", forKey: NameAutoSwitchUserDefaults.saveToHistory.rawValue)
+            UserDefaults.standard.set("isOff", forKey: SwitchesUserDefaults.saveToHistory.rawValue)
         }
     }
     
@@ -93,9 +93,11 @@ class SettingTableViewController: UITableViewController {
             }
             self.startupSetting()
             self.setupButton()
+            self.service.firstTimeLoad()
             self.autoSaveToHistorySwitch.isOn = true
             self.autoHideMyNumberSwitch.isOn = true
             self.prefixText.text = "#31#"
+
         }
     }
     
@@ -107,9 +109,11 @@ class SettingTableViewController: UITableViewController {
             self.startupSetting()
             self.setupButton()
             self.service.deleteAllData(entity: "HistoryData")
+            self.service.firstTimeLoad()
             self.autoSaveToHistorySwitch.isOn = true
             self.autoHideMyNumberSwitch.isOn = true
             self.prefixText.text = "#31#"
+
         }
     }
     
@@ -130,15 +134,16 @@ class SettingTableViewController: UITableViewController {
             segmentSwitch(switchOn: telephoneNameSwitch)
         }
         
-        if UserDefaults.standard.string(forKey: NameAutoSwitchUserDefaults.hideMyNumber.rawValue) == "isOn" || UserDefaults.standard.string(forKey: NameAutoSwitchUserDefaults.hideMyNumber.rawValue) == nil  {
+        if UserDefaults.standard.string(forKey: SwitchesUserDefaults.hideMyNumber.rawValue) == "isOn" || UserDefaults.standard.string(forKey: SwitchesUserDefaults.hideMyNumber.rawValue) == nil  {
             autoHideMyNumberSwitch.isOn = true
         } else {
+            
             autoHideMyNumberSwitch.isOn = false
         }
         
-        if UserDefaults.standard.string(forKey: NameAutoSwitchUserDefaults.saveToHistory.rawValue) == "isOn" || UserDefaults.standard.string(forKey: NameAutoSwitchUserDefaults.saveToHistory.rawValue) == nil  {
+        if UserDefaults.standard.string(forKey: SwitchesUserDefaults.saveToHistory.rawValue) == "isOn" {
             autoSaveToHistorySwitch.isOn = true
-        } else {
+        } else if UserDefaults.standard.string(forKey: SwitchesUserDefaults.saveToHistory.rawValue) == "isOff" {
             autoSaveToHistorySwitch.isOn = false
         }
     }
@@ -180,6 +185,7 @@ class SettingTableViewController: UITableViewController {
             segmentSwitch(switchOn: telephoneNameSwitch)
         }
     }
+    
     func setupView() {
         let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
         appVersionLabel.text = "App Version: \(appVersion ?? "N/A")"

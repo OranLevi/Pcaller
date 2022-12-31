@@ -16,7 +16,7 @@ enum SegmentIndex: Int {
     case telephone = 2
 }
 
-enum NameAutoSwitchUserDefaults:String{
+enum SwitchesUserDefaults:String{
     case hideMyNumber = "AutoSwitchHideMyNumber"
     case saveToHistory = "AutoSwitchSaveToHistory"
 }
@@ -44,13 +44,13 @@ class Service {
         }
     }
     
-    static var saveToHistory = true
-    
     var historyList = [HistoryData](){
         didSet {
             historyList = historyList.sorted(by: {  $0.time > $1.time })
         }
     }
+    
+    static var dialerSaveToHistory:Bool?
     
     let keychain = KeychainSwift()
     
@@ -182,11 +182,27 @@ class Service {
         
     }
     
+    func firstTimeLoad() {
+        if UserDefaults.standard.string(forKey: SwitchesUserDefaults.saveToHistory.rawValue) == nil {
+            UserDefaults.standard.set("isOn", forKey: SwitchesUserDefaults.saveToHistory.rawValue)
+        }
+    }
+    
     //MARK: - CoreData
     
     func saveHistoryData(firstName: String, lastName: String, telephone: String, callHidden: NSNumber?){
-        print(Service.saveToHistory)
-        if Service.saveToHistory == false {
+        let userDefaultsSaveToHistory = UserDefaults.standard.string(forKey: SwitchesUserDefaults.saveToHistory.rawValue)
+        let dialerHistory = Service.dialerSaveToHistory
+        
+        if userDefaultsSaveToHistory == "isOff" && dialerHistory == nil {
+            return
+        }
+        
+        if userDefaultsSaveToHistory == "isOff" && dialerHistory == false {
+            return
+        }
+        
+        if userDefaultsSaveToHistory == "isOn" && dialerHistory == false {
             return
         }
         
